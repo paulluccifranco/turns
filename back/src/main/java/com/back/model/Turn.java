@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
@@ -19,17 +21,17 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="TURN")
-@IdClass(TurnKey.class)
 public class Turn implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Long id;
     @Column(name = "DAY")
     @Temporal(TemporalType.DATE)
     private Date day;
-    @Id
     @Column(name = "HOUR")
     private int hour;
-    @Id
     @Column(name = "FIELD")
     private int field;
     @Column(name = "NAME")
@@ -40,4 +42,13 @@ public class Turn implements Serializable {
     private String phone;
     @Column(name = "DNI")
     private String dni;
+    @Column(name = "STATE_ID")
+    private int stateId;
+
+    public Turn(int hour, int field, Date date) {
+        this.hour = hour;
+        this.field = field;
+        this.day = date;
+        this.stateId = 1;
+    }
 }

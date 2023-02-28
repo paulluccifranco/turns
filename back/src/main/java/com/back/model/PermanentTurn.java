@@ -16,16 +16,16 @@ import java.io.Serializable;
 @Entity
 @NoArgsConstructor
 @Table(name="PERMANENT_TURN")
-@IdClass(PermanentTurnKey.class)
 public class PermanentTurn implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private int id;
     @Column(name = "DAY")
     private int day;
-    @Id
     @Column(name = "HOUR")
     private int hour;
-    @Id
     @Column(name = "FIELD")
     private int field;
     @Column(name = "NAME")

@@ -36,8 +36,10 @@ function ListadoHorarios() {
     </li>
   );
   return (
-    <div className='horarios'>
-      {listaHorarios}
+    <div className='horarios' style={{ backgroundColor: '#fff' }}>
+      {horarios.map((horario) =>
+        <div className="hour">{horario.hora}</div>
+      )}
     </div>
   );
 }

@@ -1,46 +1,64 @@
 .fixed-panel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #fff;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .horarios {
-    display: inline-block;
-    width: 25%;
-    text-align: center;
-    font-weight: bold;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .cancha {
-    display: inline-block;
-    width: 25%;
-    text-align: center;
-    font-weight: bold;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+}
 
-  .hour {
-    height: 100px;
-    text-align: center;
-    padding-top: 10%;
-    border: 1px solid black;
-  }
+/* .horarios {
+  display: inline-block;
+  width: 25%;
+  text-align: center;
+  font-weight: bold;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+} */
 
-  .turn {
-    height: 100px;
-    text-align: center;
-    top: 50%;
-    padding-top: 10%;
-    border: 1px solid black;
-  }
+.cancha {
+  display: inline-block;
+  width: 25%;
+  text-align: center;
+  font-weight: bold;
+}
 
-  .separate {
-    width: 100%;
-    margin-top: 37px;
-  }
-  
+/* .hour {
+  height: 100px;
+  text-align: center;
+  padding-top: 10%;
+  border: 1px solid black;
+} */
+
+.turn, .hour {
+  height: 100px;
+  /* border: 1px solid black; */
+  /* text-align: center;
+  top: 50%;
+  padding-top: 10%; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #fff;
+  margin: 10px;
+  box-shadow: 0px 2px 8px #3333334f;
+  border-radius: 8px;
+}
+
+.hour{
+  box-shadow: none;
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+  height: 100px;
+  border-radius: 0;
+}
+
+.separate {
+  width: 100%;
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  background-color: #f2f2f2;
+}

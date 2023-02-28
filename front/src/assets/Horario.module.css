@@ -1,0 +1,20 @@
+.modalContainer{
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #333333a8;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(1px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal{
+    background-color: #fff;
+    min-width: 600px;
+    min-height: 300px;
+    border-radius: 8px;
+    padding: 20px;
+}
