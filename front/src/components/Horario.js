@@ -15,6 +15,24 @@ export function Horario(props) {
         setShowModal(true);
     }
 
+    const stateStyle = (state) => {
+        if(state === 1){
+            return '#fff';
+        }
+        if(state === 2){
+            return '#E5EA4A';
+        }
+        if(state === 3){
+            return '#4ABEEA';
+        }
+        if(state === 4){
+            return 'red';
+        }
+        if(state === 5){
+            return 'green';
+        }
+    }
+
 
     const handleSubmit = (event) => {
 
@@ -56,7 +74,7 @@ export function Horario(props) {
 
     return (
         <>
-            <div className="turn" style={{ backgroundColor: props.hora.name ? 'green' : '#fff' }} onClick={() => openModal()}>
+            <div className="turn" style={{ backgroundColor: stateStyle(props.hora.stateId) }} onClick={() => openModal()}>
                 {props.hora.name || 'Libre'}
             </div>
 
