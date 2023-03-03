@@ -42,7 +42,7 @@ export function Horario(props) {
         const hour = props.hora.hour;
         const day = props.hora.day;
         const data = { name, dni, id, field, hour, day, stateId };
-        fetch('http://localhost:8080/turns', {
+        fetch('http://172.18.0.1:8080/turns', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -56,7 +56,7 @@ export function Horario(props) {
 
     const handleDelete = (event) => {
         event.preventDefault();
-        fetch(`http://localhost:8080/turns/${props.hora.id}`, {
+        fetch(`http://172.18.0.1:8080/turns/${props.hora.id}`, {
             method: 'DELETE'
         })
             .then(response => {
@@ -75,7 +75,7 @@ export function Horario(props) {
     return (
         <>
             <div className="turn" style={{ backgroundColor: stateStyle(props.hora.stateId) }} onClick={() => openModal()}>
-                {props.hora.name || 'Libre'}
+                {props.hora.name || '---'}
             </div>
 
             {
@@ -83,14 +83,10 @@ export function Horario(props) {
                     <div className={styles.modalContainer}>
                         <div className={styles.modal}>
                             <form>
-                                <label>
-                                    Nombre:
-                                    <input type="text" value={name} onChange={(event) => setName(event.target.value)} />
-                                </label>
-                                <label>
-                                    DNI:
-                                    <input type="text" value={dni} onChange={(event) => setDni(event.target.value)} />
-                                </label>
+                                <label>Nombre:</label>
+                                <input type="text" value={name} onChange={(event) => setName(event.target.value)} />
+                                <label>DNI:</label>
+                                <input type="text" value={dni} onChange={(event) => setDni(event.target.value)} />
                                 <select value={stateId} onChange={e => setStateId(e.target.value)}>
                                     <option value="1">Por Jugar</option>
                                     <option value="2">Jugando</option>
@@ -99,7 +95,7 @@ export function Horario(props) {
                                     <option value="5">Pago</option>
                                 </select>
                                 <button type="submit" onClick={handleDelete}>Borrar</button>
-                                <button onClick={() => setShowModal(false)}>Cancelar</button>
+                                <button type="submit" onClick={() => setShowModal(false)}>Cancelar</button>
                                 <button type="submit" onClick={handleSubmit}>Guardar</button>
                             </form>
                         </div>

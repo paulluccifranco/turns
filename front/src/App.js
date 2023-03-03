@@ -11,7 +11,7 @@ function App() {
   const [data, setData] = useState([]);
 
   const handleCalendarClick = (date) => {
-    fetch(`http://localhost:8080/turns/${date}`)
+    fetch(`http://172.18.0.1:8080/turns/${date}`)
       .then(response => response.json())
       .then(data => setData(data))
       .catch(error => console.log(error));

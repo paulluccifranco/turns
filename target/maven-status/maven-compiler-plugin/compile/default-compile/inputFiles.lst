@@ -1,0 +1,8 @@
+/home/franco/Workspace/Propios/turns/back/src/main/java/com/back/model/PermanentTurn.java
+/home/franco/Workspace/Propios/turns/back/src/main/java/com/back/repository/TurnRepository.java
+/home/franco/Workspace/Propios/turns/back/src/main/java/com/back/controller/TurnController.java
+/home/franco/Workspace/Propios/turns/back/src/main/java/com/back/BackApplication.java
+/home/franco/Workspace/Propios/turns/back/src/main/java/com/back/model/Turn.java
+/home/franco/Workspace/Propios/turns/back/src/main/java/com/back/service/TurnService.java
+/home/franco/Workspace/Propios/turns/back/src/main/java/com/back/repository/PermanentTurnRepository.java
+/home/franco/Workspace/Propios/turns/back/src/main/java/com/back/serviceImpl/TurnServiceImpl.java

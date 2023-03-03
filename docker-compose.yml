@@ -1,0 +1,39 @@
+version: "3"
+services:
+  mysql:
+    image: mysql:8.0.30
+    restart: always
+    environment:
+      MYSQL_DATABASE: turns
+      MYSQL_USER: turnos
+      MYSQL_PASSWORD: turnos
+      MYSQL_ROOT_PASSWORD: turnos
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    volumes:
+      - db-turns:/var/lib/mysql
+  back:
+    build:
+     dockerfile: DockerfileBack
+    ports:
+      - "8080:8080"
+    expose:
+      - 8080
+    depends_on:
+      - mysql
+  front:
+    build:
+     dockerfile: front/DockerfileFront
+    ports:
+      - "3000:3000"
+    expose:
+      - 3000
+    depends_on:
+      - back
+
+       
+volumes:
+  db-turns:

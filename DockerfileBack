@@ -1,0 +1,5 @@
+FROM adoptopenjdk/openjdk13:x86_64-alpine-jre-13.0.2_8
+ADD target/Turns.jar Turns.jar
+ENV JAVA_OPTS=""
+ENV OPTS=""
+ENTRYPOINT java $JAVA_OPTS -jar Turns.jar $OPTS
