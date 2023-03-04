@@ -7,7 +7,7 @@
   border-bottom: 1px solid #ddd;
 }
 
-/* .horarios {
+ .horarios {
   display: inline-block;
   width: 25%;
   text-align: center;
@@ -15,11 +15,11 @@
   list-style: none;
   margin: 0;
   padding: 0;
-} */
+} 
 
 .cancha {
   display: inline-block;
-  width: 25%;
+  width: 20%;
   text-align: center;
   font-weight: bold;
 }
@@ -32,7 +32,8 @@
 } */
 
 .turn, .hour {
-  height: 100px;
+  width: 350px;
+  height: 150px;
   /* border: 1px solid black; */
   /* text-align: center;
   top: 50%;
@@ -40,7 +41,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
   background-color: #fff;
   margin: 10px;
   box-shadow: 0px 2px 8px #3333334f;
@@ -49,17 +49,17 @@
 
 .hour{
   box-shadow: none;
-  border-bottom: 1px solid #ddd;
-  border-top: 1px solid #ddd;
-  height: 100px;
+  margin: 0;
+  border-bottom: 10px solid black;
+  height: 55px;
   border-radius: 0;
 }
 
 .separate {
   width: 100%;
-  margin-top: 50px;
+  margin-top: 80px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   background-color: #f2f2f2;
 }
 
@@ -105,4 +105,8 @@ form button[type="submit"]:hover{
 
 .calendar {
   align-items: center;
+}
+
+.logo {
+  width: 200px;
 }

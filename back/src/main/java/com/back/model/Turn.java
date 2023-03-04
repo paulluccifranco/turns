@@ -36,12 +36,10 @@ public class Turn implements Serializable {
     private int field;
     @Column(name = "NAME")
     private String name;
-    @Column(name = "LASTNAME")
-    private String lastname;
     @Column(name = "PHONE")
     private String phone;
-    @Column(name = "DNI")
-    private String dni;
+    @Column(name = "COMMENT")
+    private String comment;
     @Column(name = "STATE_ID")
     private int stateId;
 

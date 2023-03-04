@@ -38,7 +38,7 @@ public class TurnServiceImpl implements TurnService {
     }
 
     @Override
-    public void updateTurn(String dni, String name, Integer stateId, Long id) {
-        turnRepository.updateTurn(dni, name, stateId, id);
+    public void updateTurn(String phone, String comment, String name, Integer stateId, Long id) {
+        turnRepository.updateTurn(phone, comment, name, stateId, id);
     }
 }

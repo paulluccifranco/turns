@@ -4,6 +4,7 @@ import DatePicker from 'rsuite/DatePicker';
 import 'rsuite/dist/rsuite.min.css';
 import ListadoHorarios from './components/ListadoHorarios';
 import ListadoCancha from './components/ListadoCancha';
+import logo from './images/Logo.png';
 
 
 function App() {
@@ -22,13 +23,15 @@ function App() {
     <div>
         <header className="fixed-panel">
       <div>
-        <DatePicker oneTap style={{ width: 200 } } onSelect={handleCalendarClick}/>
+        <img className="logo" src={logo} />
+        <DatePicker oneTap style={{ width: 200, marginLeft: 700 } } onSelect={handleCalendarClick}/>
       </div>
         <div>
           <div className="cancha">Horarios</div>
           <div className="cancha">Cancha 1</div>
           <div className="cancha">Cancha 2</div>
           <div className="cancha">Cancha 3</div>
+          <div className="cancha">Cancha 4</div>
         </div>
       </header>
       {data && (
@@ -44,6 +47,7 @@ function App() {
         <ListadoCancha turnos={data.filter(turno => turno.field === 1)} handleCalendarClick={handleCalendarClick} />
         <ListadoCancha turnos={data.filter(turno => turno.field === 2)} handleCalendarClick={handleCalendarClick}/>
         <ListadoCancha turnos={data.filter(turno => turno.field === 3)} handleCalendarClick={handleCalendarClick}/>
+        <ListadoCancha turnos={data.filter(turno => turno.field === 4)} handleCalendarClick={handleCalendarClick}/>
       </div>
       )}
     </div>

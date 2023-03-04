@@ -21,8 +21,8 @@ public interface TurnRepository extends JpaRepository<Turn, Long> {
     @Modifying
     @Transactional
     @Query(value = "UPDATE TURN t " +
-            "SET t.DNI = :dni, " +
+            "SET t.PHONE = :phone, t.COMMENT = :comment, " +
             "t.STATE_ID = :stateId, t.NAME = :name " +
             "WHERE ID = :id " , nativeQuery = true)
-    void updateTurn(@Param("dni") String dni, @Param("name") String name, @Param("stateId") Integer stateId, @Param("id") Long id);
+    void updateTurn(@Param("phone") String phone, @Param("comment") String comment, @Param("name") String name, @Param("stateId") Integer stateId, @Param("id") Long id);
 }

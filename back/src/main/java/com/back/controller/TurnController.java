@@ -46,8 +46,8 @@ public class TurnController {
         }
         List<Turn> turnBase = turnService.getTurnsByDay(day);
         List<Turn> turns = new ArrayList<>();
-        for(int j=1; j<4; j++){
-            for(int i=1; i<25;i++){
+        for(int j=1; j<5; j++){
+            for(int i=1; i<13;i++){
                 Turn turnExist = new Turn(i, j, day);
                 for(Turn turn : turnBase){
                     if(turn.getHour() == i && turn.getField() == j) turnExist = turn;
@@ -68,7 +68,7 @@ public class TurnController {
     public void saveTurn(@RequestBody Turn turn){
         System.out.println(turn.getDay());
         if(turn.getId() != null){
-            turnService.updateTurn(turn.getDni(), turn.getName(), turn.getStateId(), turn.getId());
+            turnService.updateTurn(turn.getPhone(), turn.getComment(), turn.getName(), turn.getStateId(), turn.getId());
         }else{
             turnService.saveTurn(turn);
         }
