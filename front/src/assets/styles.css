@@ -1,5 +1,6 @@
 .fixed-panel {
   position: fixed;
+  height: 80px;
   top: 0;
   left: 0;
   width: 100%;
@@ -17,12 +18,24 @@
   padding: 0;
 } 
 
+.horarios4 {
+  display: inline-block;
+  width: 25%;
+  text-align: center;
+  font-weight: bold;
+  list-style: none;
+  margin-top: 60px;
+  padding: 0;
+} 
+
 .cancha {
   display: inline-block;
   width: 20%;
   text-align: center;
   font-weight: bold;
+  margin-top: 20px;
 }
+
 
 /* .hour {
   height: 100px;
@@ -47,12 +60,9 @@
   border-radius: 8px;
 }
 
-.hour{
-  box-shadow: none;
-  margin: 0;
-  border-bottom: 10px solid black;
-  height: 55px;
-  border-radius: 0;
+
+.hour {
+  height: 43.4px;
 }
 
 .separate {

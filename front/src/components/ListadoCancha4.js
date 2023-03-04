@@ -3,10 +3,10 @@ import { Horario } from './Horario';
 
 
 
-function ListadoCancha (props){
+function ListadoCancha4 (props){
 
   return (
-    <div className='horarios'>
+    <div className='horarios4'>
       {
         props.turnos.map((hora) => <Horario hora={hora} handleCalendarClick={props.handleCalendarClick}/>)
       }
@@ -14,4 +14,4 @@ function ListadoCancha (props){
   );
 }
 
-export default ListadoCancha;
+export default ListadoCancha4;

@@ -41,4 +41,14 @@ public class TurnServiceImpl implements TurnService {
     public void updateTurn(String phone, String comment, String name, Integer stateId, Long id) {
         turnRepository.updateTurn(phone, comment, name, stateId, id);
     }
+
+    @Override
+    public Turn getTurnById(Long id) {
+        return turnRepository.findById(id).get();
+    }
+
+    @Override
+    public void updatePermanentTurns(String phone, String comment, String name, Long permanentTurnId) {
+        turnRepository.updatePermanentTurns(phone, comment, name, permanentTurnId);
+    }
 }

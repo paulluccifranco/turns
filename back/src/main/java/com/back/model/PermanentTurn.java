@@ -21,7 +21,7 @@ public class PermanentTurn implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private int id;
+    private Long id;
     @Column(name = "DAY")
     private int day;
     @Column(name = "HOUR")
@@ -34,4 +34,10 @@ public class PermanentTurn implements Serializable {
     private String phone;
     @Column(name = "COMMENT")
     private String comment;
+
+    public PermanentTurn(int day, int field, int hour) {
+        this.day = day;
+        this.hour = hour;
+        this.field = field;
+    }
 }

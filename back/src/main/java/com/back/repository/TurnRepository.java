@@ -10,11 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TurnRepository extends JpaRepository<Turn, Long> {
 
     public List<Turn> findByDay(Date day);
+
+    public Optional<Turn> findById(Long id);
 
     Turn findByDayAndFieldAndHour(Date day, int field, int Hour);
 
@@ -25,4 +28,12 @@ public interface TurnRepository extends JpaRepository<Turn, Long> {
             "t.STATE_ID = :stateId, t.NAME = :name " +
             "WHERE ID = :id " , nativeQuery = true)
     void updateTurn(@Param("phone") String phone, @Param("comment") String comment, @Param("name") String name, @Param("stateId") Integer stateId, @Param("id") Long id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE PERMANENT_TURN t " +
+            "SET t.PHONE = :phone, t.COMMENT = :comment, " +
+            "t.NAME = :name " +
+            "WHERE ID = :permanentTurnId " , nativeQuery = true)
+    void updatePermanentTurns(@Param("phone") String phone, @Param("comment") String comment, @Param("name") String name, @Param("permanentTurnId") Long permanentTurnId);
 }

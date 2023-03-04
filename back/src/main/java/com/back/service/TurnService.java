@@ -15,6 +15,10 @@ public interface TurnService {
 
     public Boolean getTurnByDayAndFieldAndHour(Date day, int field, int Hour);
 
-    public void updateTurn(String dni, String comment, String name, Integer stateId, Long id);
+    public void updateTurn(String phone, String comment, String name, Integer stateId, Long id);
+
+    public Turn getTurnById(Long id);
+
+    public void updatePermanentTurns(String phone, String comment, String name,  Long permanentTurnId);
 
 }

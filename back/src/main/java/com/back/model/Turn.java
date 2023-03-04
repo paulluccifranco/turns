@@ -13,6 +13,7 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -20,7 +21,8 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="TURN")
+@Table(name="TURN", uniqueConstraints =
+        {  @UniqueConstraint(name = "UniqueTurn", columnNames = { "DAY", "HOUR", "FIELD" })})
 public class Turn implements Serializable {
 
     @Id
@@ -42,11 +44,24 @@ public class Turn implements Serializable {
     private String comment;
     @Column(name = "STATE_ID")
     private int stateId;
+    @Column(name = "PERMANENT_TURN_ID")
+    private Long permanentTurnId;
 
     public Turn(int hour, int field, Date date) {
         this.hour = hour;
         this.field = field;
         this.day = date;
         this.stateId = 1;
+    }
+
+    public Turn(Date day, int hour, int field, String name, String phone, String comment, Long permanentTurnId) {
+        this.day = day;
+        this.hour = hour;
+        this.field = field;
+        this.name = name;
+        this.phone = phone;
+        this.comment = comment;
+        this.stateId = 1;
+        this.permanentTurnId = permanentTurnId;
     }
 }

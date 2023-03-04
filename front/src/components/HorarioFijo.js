@@ -2,39 +2,18 @@ import React, { useState } from 'react'
 import url from '../helpers/api';
 import styles from '../assets/Horario.module.css';
 
-export function Horario(props) {
+export function HorarioFijo(props) {
     const [showModal, setShowModal] = useState(false);
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [comment, setComment] = useState('');
-    const [stateId, setStateId] = useState('');
 
     function openModal(){
         setPhone(props.hora.phone);
         setName(props.hora.name);
         setComment(props.hora.comment);
-        setStateId(props.hora.stateId);
         setShowModal(true);
     }
-
-    const stateStyle = (state) => {
-        if(state === 1){
-            return '#fff';
-        }
-        if(state === 2){
-            return '#E5EA4A';
-        }
-        if(state === 3){
-            return '#4ABEEA';
-        }
-        if(state === 4){
-            return 'red';
-        }
-        if(state === 5){
-            return 'green';
-        }
-    }
-
 
     const handleSubmit = (event) => {
         console.log(url)
@@ -44,8 +23,8 @@ export function Horario(props) {
         const field = props.hora.field;
         const hour = props.hora.hour;
         const day = props.hora.day;
-        const data = { name, phone, comment, id, field, hour, day, stateId };
-        fetch(`${url}/turns`, {
+        const data = { name, phone, comment, id, field, hour, day };
+        fetch(`${url}/permanent-turns`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -59,7 +38,7 @@ export function Horario(props) {
 
     const handleDelete = (event) => {
         event.preventDefault();
-        fetch(`${url}/turns/${props.hora.id}`, {
+        fetch(`${url}/permanent-turns/${props.hora.id}`, {
             method: 'DELETE'
         })
             .then(response => {
@@ -77,7 +56,7 @@ export function Horario(props) {
 
     return (
         <>
-            <div className="turn" style={{ backgroundColor: stateStyle(props.hora.stateId) }} onClick={() => openModal()}>
+            <div className="turn" style={{ backgroundColor: 'white' }} onClick={() => openModal()}>
                 {props.hora.name || '---'}
             </div>
 
@@ -86,19 +65,12 @@ export function Horario(props) {
                     <div className={styles.modalContainer}>
                         <div className={styles.modal}>
                             <form>
-                                <label >Nombre:</label>
+                                <label>Nombre:</label>
                                 <input type="text" value={name} onChange={(event) => setName(event.target.value)} />
                                 <label>Telefono:</label>
                                 <input type="text" value={phone} onChange={(event) => setPhone(event.target.value)} />
                                 <label>Comentario:</label>
-                                <input type="text" value={comment} onChange={(event) => setComment(event.target.value)} />
-                                <select value={stateId} onChange={e => setStateId(e.target.value)}>
-                                    <option value="1">Por Jugar</option>
-                                    <option value="2">Jugando</option>
-                                    <option value="3">Terminado</option>
-                                    <option value="4">Falto</option>
-                                    <option value="5">Pago</option>
-                                </select>
+                                <input type="textArea" value={comment} onChange={(event) => setComment(event.target.value)} />
                                 <button type="submit" onClick={handleSubmit}>Guardar</button>
                                 <button type="submit" onClick={() => setShowModal(false)}>Cancelar</button>
                                 <button type="submit" onClick={handleDelete}>Borrar</button>
