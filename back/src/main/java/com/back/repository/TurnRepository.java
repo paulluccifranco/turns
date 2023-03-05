@@ -36,4 +36,8 @@ public interface TurnRepository extends JpaRepository<Turn, Long> {
             "t.NAME = :name " +
             "WHERE ID = :permanentTurnId " , nativeQuery = true)
     void updatePermanentTurns(@Param("phone") String phone, @Param("comment") String comment, @Param("name") String name, @Param("permanentTurnId") Long permanentTurnId);
+
+    @Query(value = "SELECT t.DAY, t.NAME FROM TURN t WHERE t.WEEK_DAY = :weekDay " +
+            "AND t.HOUR = :hour AND t.FIELD = :field AND t.DAY > :day" , nativeQuery = true)
+    Object[]  getTurnsForPermanent(@Param("field") int field, @Param("hour") int hour, @Param("weekDay") int weekDay, @Param("day") Date day);
 }

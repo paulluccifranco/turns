@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import url from '../helpers/api';
 import styles from '../assets/Horario.module.css';
+import Position from 'rsuite/esm/Overlay/Position';
 
 export function Horario(props) {
     const [showModal, setShowModal] = useState(false);
@@ -9,7 +10,7 @@ export function Horario(props) {
     const [comment, setComment] = useState('');
     const [stateId, setStateId] = useState('');
 
-    function openModal(){
+    function openModal() {
         setPhone(props.hora.phone);
         setName(props.hora.name);
         setComment(props.hora.comment);
@@ -18,43 +19,46 @@ export function Horario(props) {
     }
 
     const stateStyle = (state) => {
-        if(state === 1){
+        if (state === 1) {
             return '#fff';
         }
-        if(state === 2){
+        if (state === 2) {
             return '#E5EA4A';
         }
-        if(state === 3){
+        if (state === 3) {
             return '#4ABEEA';
         }
-        if(state === 4){
+        if (state === 4) {
             return 'red';
         }
-        if(state === 5){
+        if (state === 5) {
             return 'green';
         }
     }
 
 
     const handleSubmit = (event) => {
-        console.log(url)
+        if (name.trim() == "") {
+            console.log("entra ca");
+        } else {
+            event.preventDefault();
+            const id = props.hora.id;
+            const field = props.hora.field;
+            const hour = props.hora.hour;
+            const day = props.hora.day;
+            const weekDay = props.hora.weekDay;
+            const data = { name, phone, comment, id, field, hour, day, stateId, weekDay };
+            fetch(`${url}/turns`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error(error)).finally(() => props.handleCalendarClick(props.hora.day));
+            setShowModal(false);
+        }
 
-        event.preventDefault();
-        const id = props.hora.id;
-        const field = props.hora.field;
-        const hour = props.hora.hour;
-        const day = props.hora.day;
-        const data = { name, phone, comment, id, field, hour, day, stateId };
-        fetch(`${url}/turns`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.error(error)).finally(() => props.handleCalendarClick(props.hora.day));
-        setShowModal(false);
-        
     };
 
     const handleDelete = (event) => {
@@ -72,12 +76,13 @@ export function Horario(props) {
                 console.error('Error:', error);
             }).finally(() => props.handleCalendarClick(props.hora.day));
         setShowModal(false);
-        
+
     };
 
     return (
         <>
             <div className="turn" style={{ backgroundColor: stateStyle(props.hora.stateId) }} onClick={() => openModal()}>
+                <div style={{position: 'absolute', marginLeft: 250, marginBottom: 100}}>{props.hora.permanentTurnId === null ? '' : 'Turno Fijo'}</div>
                 {props.hora.name || '---'}
             </div>
 
@@ -87,11 +92,11 @@ export function Horario(props) {
                         <div className={styles.modal}>
                             <form>
                                 <label >Nombre:</label>
-                                <input type="text" value={name} onChange={(event) => setName(event.target.value)} />
+                                <input autoFocus required type="text" value={name} onChange={(event) => setName(event.target.value)} onInvalid={F => F.target.setCustomValidity('Debe ingresar un nombre')} />
                                 <label>Telefono:</label>
                                 <input type="text" value={phone} onChange={(event) => setPhone(event.target.value)} />
                                 <label>Comentario:</label>
-                                <input type="text" value={comment} onChange={(event) => setComment(event.target.value)} />
+                                <input type="textarea" value={comment} onChange={(event) => setComment(event.target.value)} />
                                 <select value={stateId} onChange={e => setStateId(e.target.value)}>
                                     <option value="1">Por Jugar</option>
                                     <option value="2">Jugando</option>

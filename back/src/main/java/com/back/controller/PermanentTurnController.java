@@ -27,6 +27,7 @@ import java.util.List;
 public class PermanentTurnController {
 
     private PermanentTurnService permanentTurnService;
+    private TurnService turnService;
 
     @GetMapping("/{date}")
     public List<PermanentTurn> getTurns(@PathVariable("date") int day)  {
@@ -52,12 +53,14 @@ public class PermanentTurnController {
     }
 
     @PostMapping()
-    public void saveTurn(@RequestBody PermanentTurn turn){
-        System.out.println(turn.getDay());
+    public List<Turn> saveTurn(@RequestBody PermanentTurn turn){
+        List<Turn> turnList = turnService.getTurnsForPermanent(turn.getField(), turn.getHour(), turn.getDay(), new Date());
         if(turn.getId() != null){
             permanentTurnService.updatePermanentTurn(turn.getPhone(), turn.getComment(), turn.getName(), turn.getId());
         }else{
             permanentTurnService.savePermanentTurn(turn);
         }
+
+        return turnList;
     }
 }

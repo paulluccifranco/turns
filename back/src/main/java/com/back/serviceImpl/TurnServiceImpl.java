@@ -1,5 +1,6 @@
 package com.back.serviceImpl;
 
+import com.back.mapper.TurnMapper;
 import com.back.model.Turn;
 import com.back.repository.TurnRepository;
 import com.back.service.TurnService;
@@ -50,5 +51,11 @@ public class TurnServiceImpl implements TurnService {
     @Override
     public void updatePermanentTurns(String phone, String comment, String name, Long permanentTurnId) {
         turnRepository.updatePermanentTurns(phone, comment, name, permanentTurnId);
+    }
+
+    @Override
+    public List<Turn> getTurnsForPermanent(int field, int hour, int weekDay, Date day) {
+        System.out.println(field+"--"+weekDay+"---"+hour);
+        return TurnMapper.mapTurnList(turnRepository.getTurnsForPermanent(field, hour, weekDay, day));
     }
 }

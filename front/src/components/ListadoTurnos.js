@@ -7,11 +7,19 @@ import ListadoCancha from './ListadoCancha';
 import ListadoCancha4 from './ListadoCancha4';
 import url from '../helpers/api';
 import es_AR from 'rsuite/locales/es_AR';
+import styles from '../assets/Horario.module.css';
 
 
 function ListadoTurnos() {
 
   const [data, setData] = useState([]);
+  const [showResume, setShowResume] = useState(false);
+  let porJugar = 0;
+  let jugando = 0;
+  let terminado = 0;
+  let falto = 0;
+  let pago = 0;
+
 
   const handleCalendarClick = (date) => {
     fetch(`${url}/turns/${date}`)
@@ -20,15 +28,25 @@ function ListadoTurnos() {
       .catch(error => console.log(error));
   }
 
+  function closeResume () {
+    porJugar = 0;
+  jugando = 0;
+  terminado = 0;
+  falto = 0;
+  pago = 0;
+    setShowResume(false);
+  }
+
 
   return (
     <div>
       <header className="fixed-panel">
         <div>
-        <span style={{ width: 200, marginLeft: 400, fontWeight: 'bold', fontSize: 20 }}>Listado de Turnos</span>
+          <span style={{ width: 200, marginLeft: 400, fontWeight: 'bold', fontSize: 20 }}>Listado de Turnos</span>
           <CustomProvider locale={es_AR}>
             <DatePicker oneTap style={{ width: 200, marginLeft: 200 }} onSelect={handleCalendarClick} />
           </CustomProvider>
+          <button style={{ width: 200, marginLeft: 400, fontWeight: 'bold', fontSize: 20 }} onClick={() => setShowResume(true)}>Resumen de Turnos</button>
         </div>
         <div>
           <div className="cancha">Horarios</div>
@@ -52,6 +70,31 @@ function ListadoTurnos() {
           <ListadoCancha turnos={data.filter(turno => turno.field === 2)} handleCalendarClick={handleCalendarClick} />
           <ListadoCancha turnos={data.filter(turno => turno.field === 3)} handleCalendarClick={handleCalendarClick} />
           <ListadoCancha4 turnos={data.filter(turno => turno.field === 4)} handleCalendarClick={handleCalendarClick} />
+        </div>
+      )}
+      {showResume && (
+        <div className={styles.modalContainer}>
+          <div className={styles.modal}>
+            <form style={{ textAlign: "left" }}>
+              <span>Los turnos del dia quedaron de la siguiente manera: </span><br/>
+                {data.map((turn) => 
+                {
+                  if(turn.stateId === 1){porJugar = porJugar+1};
+                  if(turn.stateId === 2){jugando = jugando+1};
+                  if(turn.stateId === 3){terminado = terminado+1};
+                  if(turn.stateId === 4){falto = falto+1};
+                  if(turn.stateId === 5){pago = pago+1};
+                }
+                )}
+                <span>Quedan por Jugar: {porJugar} turnos</span><br/>
+                <span>Estan Jugando: {jugando} turnos</span><br/>
+                <span>Terminados: {terminado} turnos</span><br/>
+                <span>Faltaron: {falto} turnos</span><br/>
+                <span>Pagaron: {pago} turnos</span><br/>
+
+              <button type="submit" onClick={() => closeResume([])}>Cerrar</button>
+            </form>
+          </div>
         </div>
       )}
     </div>

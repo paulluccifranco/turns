@@ -24,3 +24,7 @@ hs_err_pid*
 
 #Folders
 front/node_modules
+front/build
+
+DockerBuild/build/
+DockerBuild/db_data/

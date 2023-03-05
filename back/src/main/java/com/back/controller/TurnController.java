@@ -53,7 +53,7 @@ public class TurnController {
         int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
         List<PermanentTurn> permanentTurns = permanentTurnService.getPermanentTurnsByDay(dayOfWeek);
         for(PermanentTurn permTurn : permanentTurns){
-            Turn newTurn = new Turn(day, permTurn.getHour(),permTurn.getField(),permTurn.getName(),permTurn.getPhone(),permTurn.getComment(),permTurn.getId());
+            Turn newTurn = new Turn(day, permTurn.getHour(),permTurn.getField(),permTurn.getName(),permTurn.getPhone(),permTurn.getComment(),permTurn.getId(),dayOfWeek);
             try{
                 if(!permanentTurnService.getDeletedTurn(day, permTurn.getId())) turnService.saveTurn(newTurn);
             }catch(Exception ex){
@@ -64,7 +64,7 @@ public class TurnController {
         List<Turn> turns = new ArrayList<>();
         for(int j=1; j<5; j++){
             for(int i=1; i<13;i++){
-                Turn turnExist = new Turn(i, j, day);
+                Turn turnExist = new Turn(i, j, day, dayOfWeek);
                 for(Turn turn : turnBase){
                     if(turn.getHour() == i && turn.getField() == j) turnExist = turn;
                 }

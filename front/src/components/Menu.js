@@ -24,8 +24,8 @@ function Menu() {
       {showMenu && (
         <div className="dropdown-menu">
           <ul>
-            <li><button onClick={() => cambiarPantalla("Turnos")}>Turnos</button></li>
-            <li><button onClick={() => cambiarPantalla("TurnosFijos")}>Turnos Fijos</button></li>
+            <li onClick={() => cambiarPantalla("Turnos")}>Turnos</li>
+            <li onClick={() => cambiarPantalla("TurnosFijos")}>Turnos Fijos</li>
           </ul>
         </div>
       )}
