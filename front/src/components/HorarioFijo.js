@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import url from '../helpers/api';
+import {url} from '../helpers/api';
 import styles from '../assets/Horario.module.css';
 
 export function HorarioFijo(props) {
@@ -106,7 +106,7 @@ export function HorarioFijo(props) {
                 showModal && (
                     <div className={styles.modalContainer}>
                         <div className={styles.modal}>
-                            <span> Cancha {props.hora.field}  Horario: {showHorario(props.hora.field, props.hora.hour)}</span>
+                            <span> Cancha {props.hora.field}  Horario: {showHorario(props.hora.field, props.hora.hour)} HS</span>
                             <form>
                                 <label>Nombre:</label>
                                 <input autoFocus required type="text" value={name} onChange={(event) => setName(event.target.value)} onInvalid={F => F.target.setCustomValidity('Debe ingresar un nombre')}  />

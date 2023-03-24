@@ -58,4 +58,10 @@ public class TurnServiceImpl implements TurnService {
         System.out.println(field+"--"+weekDay+"---"+hour);
         return TurnMapper.mapTurnList(turnRepository.getTurnsForPermanent(field, hour, weekDay, day));
     }
+
+    @Override
+    public void deletePermanentTurns(Long permanentTurnId, Date date) {
+        turnRepository.deletePermanentTurns(permanentTurnId, date);
+
+    }
 }

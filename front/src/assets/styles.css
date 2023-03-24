@@ -1,56 +1,75 @@
 .fixed-panel {
   position: fixed;
+  z-index: 1;
   height: 80px;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 1850px;
   background-color: #fff;
   border-bottom: 1px solid #ddd;
 }
 
- .horarios {
+.horarios {
   display: inline-block;
-  width: 25%;
+  width: 310px;
   text-align: center;
   font-weight: bold;
   list-style: none;
   margin: 0;
   padding: 0;
-} 
+}
 
 .horarios4 {
   display: inline-block;
-  width: 25%;
+  width: 310px;
   text-align: center;
   font-weight: bold;
   list-style: none;
-  margin-top: 60px;
+  margin-top: 20px;
   padding: 0;
-} 
+}
+
+.time-container {
+  display: inline-block;
+  width: 135px;
+  text-align: center;
+  font-weight: bold;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.time-container-rigth {
+  display: inline-block;
+  width: 135px;
+  text-align: center;
+  font-weight: bold;
+  list-style: none;
+  margin-top: 20px;
+  padding: 0;
+}
 
 .cancha {
   display: inline-block;
-  width: 20%;
+  width: 310px;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.time-header {
+  display: inline-block;
+  width: 135px;
   text-align: center;
   font-weight: bold;
   margin-top: 20px;
 }
 
 
-/* .hour {
-  height: 100px;
-  text-align: center;
-  padding-top: 10%;
-  border: 1px solid black;
-} */
-
-.turn, .hour {
-  width: 350px;
-  height: 150px;
-  /* border: 1px solid black; */
-  /* text-align: center;
-  top: 50%;
-  padding-top: 10%; */
+.turn,
+.hour {
+  width: 300px;
+  height: 54px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,66 +77,25 @@
   margin: 10px;
   box-shadow: 0px 2px 8px #3333334f;
   border-radius: 8px;
+  grid-column: 1;
+  overflow: hidden;
+  white-space: pre-wrap;
 }
-
 
 .hour {
-  height: 43.4px;
+  width: 125px;
+  font-weight: bold;
+  font-size: 16pt;
 }
+
 
 .separate {
-  width: 100%;
+  width: 1550px;
   margin-top: 80px;
+  margin-left: 310px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   background-color: #f2f2f2;
-}
-
-form{
-	width:300px;
-	padding:16px;
-	border-radius:10px;
-	margin:auto;
-	background-color:#ccc;
-}
-
-form label{
-	width:72px;
-	font-weight:bold;
-	display:inline-block;
-}
-
-form input[type="text"],
-form input[type="email"]{
-	width:180px;
-	padding:3px 10px;
-	border:1px solid #f6f6f6;
-	border-radius:3px;
-	background-color:#f6f6f6;
-	margin:8px 0;
-	display:inline-block;
-}
-
-form button[type="submit"]{
-	width:100%;
-	padding:8px 16px;
-	margin-top:32px;
-	border:1px solid #000;
-	border-radius:5px;
-	display:block;
-	color:#fff;
-	background-color:#000;
-} 
-
-form input[type="textarea"] {
-  vertical-align: top;
-  width: 100%;
-  height: 90px;
-  margin-bottom: 50px;
-}
-
-form button[type="submit"]:hover{
-	cursor:pointer;
 }
 
 .calendar {
@@ -126,4 +104,43 @@ form button[type="submit"]:hover{
 
 .logo {
   width: 200px;
+}
+
+.left-panel {
+  position: fixed;
+  z-index: 1;
+  display: inline-block;
+  top: 0;
+  width: 310px;
+  height: 100%;
+  text-align: center;
+  font-weight: bold;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+}
+
+.panel-menu {
+  margin-top: 180px;
+}
+
+.panel-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.panel-menu li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.panel-menu li:hover {
+  cursor: pointer;
+  background-color: aqua;
+}
+
+.panel-menu li:first-child {
+  border-top: 1px solid #ccc;
 }

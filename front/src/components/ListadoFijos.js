@@ -5,7 +5,8 @@ import 'rsuite/dist/rsuite.min.css';
 import ListadoHorarios from './ListadoHorarios';
 import ListadoCanchaFijo from './ListadoCanchaFijo';
 import ListadoCancha4Fijo from './ListadoCancha4Fijo';
-import url from '../helpers/api';
+import TimeListRigth from './TimeListRigth';
+import {url} from '../helpers/api';
 import es_AR from 'rsuite/locales/es_AR';
 
 
@@ -47,11 +48,13 @@ function ListadoFijos() {
           </CustomProvider>
         </div>
         <div>
-          <div className="cancha">Horarios</div>
+          <div className="cancha"></div>
+          <div className="time-header">Horarios</div>
           <div className="cancha">Cancha 1</div>
           <div className="cancha">Cancha 2</div>
           <div className="cancha">Cancha 3</div>
           <div className="cancha">Cancha 4</div>
+          <div className="time-header">Horarios</div>
         </div>
       </header>
       {data && (
@@ -68,6 +71,7 @@ function ListadoFijos() {
           <ListadoCanchaFijo turnos={data.filter(turno => turno.field === 2)} handleCalendarClick={handleCalendarClick} />
           <ListadoCanchaFijo turnos={data.filter(turno => turno.field === 3)} handleCalendarClick={handleCalendarClick} />
           <ListadoCancha4Fijo turnos={data.filter(turno => turno.field === 4)} handleCalendarClick={handleCalendarClick} />
+          <TimeListRigth></TimeListRigth>
         </div>
       )}
     </div>

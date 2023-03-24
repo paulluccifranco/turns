@@ -49,6 +49,7 @@ public class PermanentTurnController {
 
     @DeleteMapping("/{id}")
     public void deleteTurn(@PathVariable("id") Long id){
+        turnService.deletePermanentTurns(id, new Date());
         permanentTurnService.deletePermanentTurn(id);
     }
 

@@ -2,19 +2,19 @@ import React from 'react';
 
 
 const horarios = [
-  { hora: '07:30' },
-  { hora: '09:00' },
-  { hora: '10:30' },
-  { hora: '12:00' },
-  { hora: '13:30' },
-  { hora: '15:00' },
-  { hora: '16:30' },
-  { hora: '18:00' },
-  { hora: '19:30' },
-  { hora: '21:00' },
-  { hora: '22:30' },
-  { hora: '00:00' },
-  { hora: '01:30' }
+  { hora: '08:00' },
+  { hora: '09:30' },
+  { hora: '11:00' },
+  { hora: '12:30' },
+  { hora: '14:00' },
+  { hora: '15:30' },
+  { hora: '17:00' },
+  { hora: '18:30' },
+  { hora: '20:00' },
+  { hora: '21:30' },
+  { hora: '23:00' },
+  { hora: '00:30' },
+  { hora: '02:00' }
 ];
 
 
@@ -25,7 +25,7 @@ function ListadoHorarios() {
     </li>
   );
   return (
-    <div className='time-container'>
+    <div className='time-container-rigth'>
       {horarios.map((horario) =>
         <div className="hour">{horario.hora}</div>
       )}

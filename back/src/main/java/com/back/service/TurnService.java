@@ -21,5 +21,6 @@ public interface TurnService {
 
     public void updatePermanentTurns(String phone, String comment, String name,  Long permanentTurnId);
     public List<Turn> getTurnsForPermanent(int field, int hour, int weekDay, Date day);
+    public void deletePermanentTurns(Long permanentTurnId, Date date);
 
 }

@@ -40,4 +40,9 @@ public interface TurnRepository extends JpaRepository<Turn, Long> {
     @Query(value = "SELECT t.DAY, t.NAME FROM TURN t WHERE t.WEEK_DAY = :weekDay " +
             "AND t.HOUR = :hour AND t.FIELD = :field AND t.DAY > :day" , nativeQuery = true)
     Object[]  getTurnsForPermanent(@Param("field") int field, @Param("hour") int hour, @Param("weekDay") int weekDay, @Param("day") Date day);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM TURN t WHERE t.PERMANENT_TURN_ID = :permanentTurnId AND t.DAY > :date" , nativeQuery = true)
+    void deletePermanentTurns(@Param("permanentTurnId") Long permanentTurnId, @Param("date") Date date);
 }
