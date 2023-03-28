@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {url}  from '../helpers/api';
 import styles from '../assets/Horario.module.css';
+import { Sells } from './Sells';
 
 export function Horario(props) {
 
@@ -34,26 +35,15 @@ export function Horario(props) {
         { value: 12, hora: '00:30' }
     ];
 
-    useEffect(() => {
-        handleProductList();
-    }, []);
 
     const [showModal, setShowModal] = useState(false);
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [comment, setComment] = useState('');
     const [stateId, setStateId] = useState('');
-    const [code, setCode] = useState('');
-    const [description, setDescription] = useState('');
-    const [units, setUnits] = useState('');
     const [shouldFocus, setShouldFocus] = useState(false);
-    const [dailySells, setDailySells] = useState([]);
-    const [products, setProducts] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
+    
 
-    const handleSearchTermChange = event => {
-        setSearchTerm(event.target.value);
-    };
 
     function openModal() {
         setPhone(props.hora.phone);
@@ -61,24 +51,10 @@ export function Horario(props) {
         setComment(props.hora.comment);
         setStateId(props.hora.stateId);
         props.hora.id === null ? setShouldFocus(true) : setShouldFocus(false);
-        getDailySell();
         setShowModal(true);
     }
 
-    const handleProductList = () => {
-        fetch(`${url}/product`)
-            .then(response => response.json())
-            .then(data => setProducts(data))
-            .catch(error => console.log(error));
-    }
-
-    const getDailySell = () => {
-        const id = props.hora.id;
-        fetch(`${url}/daily-sell/turn/${id}`)
-            .then(response => response.json())
-            .then(data => setDailySells(data))
-            .catch(error => console.log(error));
-    }
+    
 
     function showHorario(field, hour) {
         let hora = "";
@@ -118,7 +94,7 @@ export function Horario(props) {
             const id = props.hora.id;
             const field = props.hora.field;
             const hour = props.hora.hour;
-            const day = props.hora.day;
+            const day = new Date(props.hora.day.substring(0,10)+"T00:00:00-03:00");
             const weekDay = props.hora.weekDay;
             const data = { name, phone, comment, id, field, hour, day, stateId, weekDay };
             fetch(`${url}/turns`, {
@@ -128,33 +104,17 @@ export function Horario(props) {
             })
                 .then(response => response.json())
                 .then(data => console.log(data))
-                .catch(error => console.error(error)).finally(() => props.handleCalendarClick(props.hora.day));
+                .catch(error => console.error(error)).finally(() => props.handleCalendarClick(day));
             setShowModal(false);
         }
 
     };
 
-    const saveDailySell = (event) => {
-        event.preventDefault();
-        const id = props.hora.id;
-        const field = props.hora.field;
-        const hour = props.hora.hour;
-        const day = props.hora.day;
-        const weekDay = props.hora.weekDay;
-        const data = { name, phone, comment, id, field, hour, day, stateId, weekDay };
-        fetch(`${url}/turns`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.error(error)).finally(() => props.handleCalendarClick(props.hora.day));
-        setShowModal(false);
-    };
+    
 
     const handleDelete = (event) => {
         event.preventDefault();
+        const day = new Date(props.hora.day.substring(0,10)+"T00:00:00-03:00");
         fetch(`${url}/turns/${props.hora.id}`, {
             method: 'DELETE'
         })
@@ -166,22 +126,11 @@ export function Horario(props) {
             })
             .catch(error => {
                 console.error('Error:', error);
-            }).finally(() => props.handleCalendarClick(props.hora.day));
+            }).finally(() => props.handleCalendarClick(day));
         setShowModal(false);
 
     };
 
-    function handleInputChange(event) {
-        const inputValue = event.target.value;
-        const newValue = inputValue.replace(/[^0-9]/g, "");
-        setUnits(newValue);
-    }
-
-    function cleanSell() {
-        setCode('');
-        setDescription('');
-        setUnits('');
-    }
 
     return (
         <>
@@ -219,61 +168,7 @@ export function Horario(props) {
                                     </div>
                                 </form>
                             </div>
-                            <div className={styles.sells}>
-                                <h1>Venta</h1>
-                                <form>
-                                    <label >Codigo:</label>
-                                    <input autoFocus={!shouldFocus} type="text" value={code} onChange={(event) => setCode(event.target.value)} />
-                                    <label>Nombre:</label>
-
-                                    <input
-                                        id="product-search"
-                                        type="text"
-                                        value={searchTerm}
-                                        onChange={handleSearchTermChange}
-                                        list="product-list"
-                                    />
-                                    <datalist id="product-list">
-                                        {products.map(product => (
-                                            <option key={product.id} value={product.description} />
-                                        ))}
-                                    </datalist>
-
-
-                                    <label>Cantidad:</label>
-                                    <input type="text" value={units} onChange={handleInputChange} />
-                                    <div className='button-container'>
-                                        <button type="button" onClick={handleSubmit}>Guardar</button>
-                                        <button type="button" onClick={cleanSell}>Borrar</button>
-                                    </div>
-                                </form>
-                                <div className={styles.sellsList}>
-                                    <h1>Listado de Productos</h1>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th style={{ width: '25%' }}>Description</th>
-                                                <th style={{ width: '40%' }}>Unidades</th>
-                                                <th style={{ width: '5%' }}>Precio</th>
-                                                <th style={{ width: '30%' }}>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {Array.from(dailySells).map((dailySell) => (
-                                                <tr>
-                                                    <td>{dailySell.description}</td>
-                                                    <td>{dailySell.units}</td>
-                                                    <td>{dailySell.productPrice}</td>
-                                                    <td>
-                                                        <button type="button">Editar</button>
-                                                        <button type="button">Restar</button>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            <Sells turnId={props.hora.id}></Sells>
                             <div className={styles.currentAccount}>
                                 <h1>Cuenta Corriente</h1>
                             </div>

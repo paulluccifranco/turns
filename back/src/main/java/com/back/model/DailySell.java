@@ -25,8 +25,6 @@ public class DailySell implements Serializable {
     private Long id;
     @Column(name = "TURN_ID")
     private Long turnId;
-    @Column(name = "PERMANENT_TURN_ID")
-    private Long permanentTurnId;
     @Column(name = "PRODUCT_ID")
     private Long productId;
     @Column(name = "PRODUCT_DESCRIPTION")

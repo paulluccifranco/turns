@@ -34,31 +34,35 @@ public class TurnController {
 
     @GetMapping("/{date}")
     public List<Turn> getTurns(@PathVariable("date") String dayUnformated)  {
+        System.out.println(dayUnformated);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd yyyy");
-        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
         Date day = null;
         try {
             String date = dayUnformated.substring(4,15);
             day = simpleDateFormat.parse(date);
         } catch (Exception e) {
-            try{
-                String date2 = dayUnformated.substring(0,10);
-                day = simpleDateFormat2.parse(date2);
-            }catch(Exception ex){
-
-            }
+            System.out.println(e);
         }
         Calendar cal = Calendar.getInstance();
         cal.setTime(day);
         int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
         List<PermanentTurn> permanentTurns = permanentTurnService.getPermanentTurnsByDay(dayOfWeek);
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTime(new Date());
+        cal2.setTime(day);
+        boolean sameDay = (cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
+                cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)) || cal1.before(cal2);
         for(PermanentTurn permTurn : permanentTurns){
-            Turn newTurn = new Turn(day, permTurn.getHour(),permTurn.getField(),permTurn.getName(),permTurn.getPhone(),permTurn.getComment(),permTurn.getId(),dayOfWeek);
-            try{
-                if(!permanentTurnService.getDeletedTurn(day, permTurn.getId())) turnService.saveTurn(newTurn);
-            }catch(Exception ex){
-                System.out.println(ex);
+            if(sameDay){
+                Turn newTurn = new Turn(day, permTurn.getHour(),permTurn.getField(),permTurn.getName(),permTurn.getPhone(),permTurn.getComment(),permTurn.getId(),dayOfWeek);
+                try{
+                    if(!permanentTurnService.getDeletedTurn(day, permTurn.getId())) turnService.saveTurn(newTurn);
+                }catch(Exception ex){
+                    System.out.println(ex);
+                }
             }
+
         }
         List<Turn> turnBase = turnService.getTurnsByDay(day);
         List<Turn> turns = new ArrayList<>();

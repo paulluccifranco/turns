@@ -163,3 +163,23 @@
   box-shadow: 0px 2px 8px #3333334f;
   border-radius: 8px;
 }
+
+.optionsContainer{
+    position: fixed;
+    background-color: #fff;
+    margin-left: 130px;
+    width: 550px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    max-height: 200px;
+    overflow: scroll;
+}
+
+.optionItem {
+    border-bottom: 1px solid black;
+}
+
+.optionItem:hover{
+    background-color: #bbf188;
+    cursor: pointer;
+}
