@@ -58,6 +58,7 @@ public class PermanentTurnController {
         List<Turn> turnList = turnService.getTurnsForPermanent(turn.getField(), turn.getHour(), turn.getDay(), new Date());
         if(turn.getId() != null){
             permanentTurnService.updatePermanentTurn(turn.getPhone(), turn.getComment(), turn.getName(), turn.getId());
+            turnService.updatePermanentTurns(turn.getPhone(), turn.getComment(), turn.getName(), turn.getId());
         }else{
             permanentTurnService.savePermanentTurn(turn);
         }

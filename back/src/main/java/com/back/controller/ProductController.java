@@ -5,6 +5,8 @@ import com.back.model.Product;
 import com.back.model.Turn;
 import com.back.service.ProductService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,8 +46,13 @@ public class ProductController {
     }
 
     @PostMapping()
-    public void saveProduct(@RequestBody Product product){
-        productService.saveProduct(product);
+    public ResponseEntity<Object> saveProduct(@RequestBody Product product){
+        try {
+            productService.saveProduct(product);
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }catch(Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+        }
     }
 
     @PutMapping("/{id}/{units}")

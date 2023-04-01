@@ -31,10 +31,10 @@ public interface TurnRepository extends JpaRepository<Turn, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE PERMANENT_TURN t " +
+    @Query(value = "UPDATE TURN t " +
             "SET t.PHONE = :phone, t.COMMENT = :comment, " +
             "t.NAME = :name " +
-            "WHERE ID = :permanentTurnId " , nativeQuery = true)
+            "WHERE PERMANENT_TURN_ID = :permanentTurnId " , nativeQuery = true)
     void updatePermanentTurns(@Param("phone") String phone, @Param("comment") String comment, @Param("name") String name, @Param("permanentTurnId") Long permanentTurnId);
 
     @Query(value = "SELECT t.DAY, t.NAME FROM TURN t WHERE t.WEEK_DAY = :weekDay " +

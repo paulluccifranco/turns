@@ -4,8 +4,6 @@ import { CustomProvider, SelectPicker } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import ListadoHorarios from './ListadoHorarios';
 import ListadoCanchaFijo from './ListadoCanchaFijo';
-import ListadoCancha4Fijo from './ListadoCancha4Fijo';
-import TimeListRigth from './TimeListRigth';
 import {url} from '../helpers/api';
 import es_AR from 'rsuite/locales/es_AR';
 
@@ -36,13 +34,12 @@ function ListadoFijos() {
     <div>
       <header className="fixed-panel">
         <div>
-        <span style={{ width: 200, marginLeft: 400, fontWeight: 'bold', fontSize: 20 }}>Listado de Turnos Fijos</span>
           <CustomProvider locale={es_AR}>
             <SelectPicker
               data={weekDays}
               placeholder="Seleccione un día de la semana"
               searchable={false}
-              style={{ flex: 1, width: 300, marginLeft: 200 }}
+              style={{ flex: 1, width: 300, marginLeft: 600 }}
               onSelect={handleCalendarClick}
             />
           </CustomProvider>
@@ -70,8 +67,8 @@ function ListadoFijos() {
           <ListadoCanchaFijo turnos={data.filter(turno => turno.field === 1)} handleCalendarClick={handleCalendarClick} />
           <ListadoCanchaFijo turnos={data.filter(turno => turno.field === 2)} handleCalendarClick={handleCalendarClick} />
           <ListadoCanchaFijo turnos={data.filter(turno => turno.field === 3)} handleCalendarClick={handleCalendarClick} />
-          <ListadoCancha4Fijo turnos={data.filter(turno => turno.field === 4)} handleCalendarClick={handleCalendarClick} />
-          <TimeListRigth></TimeListRigth>
+          <ListadoCanchaFijo turnos={data.filter(turno => turno.field === 4)} handleCalendarClick={handleCalendarClick} />
+          <ListadoHorarios></ListadoHorarios>
         </div>
       )}
     </div>

@@ -1,0 +1,35 @@
+.sellsFrame {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    height: 850px;
+    width: 1550px;
+  margin-top: 80px;
+  margin-left: 310px;
+  background-color: #f2f2f2;
+}
+
+.sellsList {
+    border: 1px solid black;
+    overflow-y:scroll;
+    background-color: #ccc;
+    justify-content: center;
+    grid-row: span 4;
+  align-items: center;
+  background-color: #fff;
+  margin: 10px;
+  box-shadow: 0px 2px 8px #3333334f;
+  border-radius: 8px;
+}
+
+.sellsList table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.sellsList th, .sellsList td {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid #ddd;
+}

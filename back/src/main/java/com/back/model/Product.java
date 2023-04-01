@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @Table(name="PRODUCT", uniqueConstraints =
-        {  @UniqueConstraint(name = "ProductCode", columnNames = { "CODE","DESCRIPTION" })})
+        {  @UniqueConstraint(name = "ProductCode", columnNames = { "CODE" })})
 public class Product implements Serializable {
 
     @Id

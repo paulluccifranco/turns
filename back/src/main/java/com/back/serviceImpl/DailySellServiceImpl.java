@@ -31,7 +31,19 @@ public class DailySellServiceImpl implements DailySellService {
 
     @Override
     public void saveDailySell(DailySell dailySell) {
-        dailySellRepository.save(dailySell);
+        List<DailySell> dailySells = getDailySellListByTurnId(dailySell.getTurnId());
+        DailySell dailySellUpdate = dailySells.stream().filter(sell -> sell.getProductId().equals(dailySell.getProductId())).findFirst().orElse(null);
+        if(dailySellUpdate != null && dailySellUpdate.getProductPrice().compareTo(dailySell.getProductPrice()) == 0) {
+            dailySellUpdate.setUnits(dailySell.getUnits() + dailySellUpdate.getUnits());
+            if(dailySellUpdate.getUnits() == 0) {
+                dailySellRepository.deleteById(dailySellUpdate.getId());
+            }else {
+                dailySellRepository.save(dailySellUpdate);
+            }
+
+        }else {
+            dailySellRepository.save(dailySell);
+        }
     }
 
     @Override

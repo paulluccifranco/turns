@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {url} from '../helpers/api';
-import styles from '../assets/Horario.module.css';
+import styles from '../assets/PermanentTurn.module.css';
+import { CurrentAccount } from './CurrentAccount';
 
 export function HorarioFijo(props) {
     const horariosCanchas = [
@@ -18,41 +19,23 @@ export function HorarioFijo(props) {
         { value: 12, hora: '00:00' }
       ];
 
-      const horariosCancha4 = [
-        { value: 1, hora: '08:00' },
-        { value: 2, hora: '09:30' },
-        { value: 3, hora: '11:00' },
-        { value: 4, hora: '12:30' },
-        { value: 5, hora: '14:00' },
-        { value: 6, hora: '15:30' },
-        { value: 7, hora: '17:00' },
-        { value: 8, hora: '18:30' },
-        { value: 9, hora: '20:00' },
-        { value: 10, hora: '21:30' },
-        { value: 11, hora: '23:00' },
-        { value: 12, hora: '00:30' }
-      ];
     const [showModal, setShowModal] = useState(false);
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [comment, setComment] = useState('');
     const [superposedTurns, setSuperposedTurns] = useState([]);
+    const [shouldFocus, setShouldFocus] = useState(false);
 
     function openModal() {
         setPhone(props.hora.phone);
         setName(props.hora.name);
         setComment(props.hora.comment);
+        props.hora.id === null ? setShouldFocus(true) : setShouldFocus(false);
         setShowModal(true);
     }
 
-    function showHorario(field, hour){
-        let hora = "";
-        if(field === 4){
-            hora = horariosCancha4.find((hora) => hora.value === hour);
-        }else {
-            hora = horariosCanchas.find((hora) => hora.value === hour);
-        }
-
+    function showHorario(hour){
+        let hora = horariosCanchas.find((hora) => hora.value === hour);
         return hora.hora;
     }
 
@@ -61,6 +44,7 @@ export function HorarioFijo(props) {
             console.log("entra ca");
         } else {
             event.preventDefault();
+            console.log(props.hora);
             const id = props.hora.id;
             const field = props.hora.field;
             const hour = props.hora.hour;
@@ -72,7 +56,7 @@ export function HorarioFijo(props) {
                 body: JSON.stringify(data)
             })
                 .then(response => response.json())
-                .then(data => setSuperposedTurns(data))
+                .then(data => {if(id === null)setSuperposedTurns(data)})
                 .catch(error => console.error(error)).finally(() => props.handleCalendarClick(props.hora.day));
             setShowModal(false);
         }
@@ -89,6 +73,7 @@ export function HorarioFijo(props) {
                 }
                 console.log('El turno ha sido eliminado correctamente');
             })
+            .then(setSuperposedTurns([]))
             .catch(error => {
                 console.error('Error:', error);
             }).finally(() => props.handleCalendarClick(props.hora.day));
@@ -105,19 +90,33 @@ export function HorarioFijo(props) {
             {
                 showModal && (
                     <div className={styles.modalContainer}>
+                        <h6 className={styles.title}> Cancha {props.hora.field}  Horario: {showHorario(props.hora.hour)} HS</h6>
+                        <button type="close" onClick={() => setShowModal(false)}>X</button>
                         <div className={styles.modal}>
-                            <span> Cancha {props.hora.field}  Horario: {showHorario(props.hora.field, props.hora.hour)} HS</span>
+                            <div>
+                        <h1>Turno Fijo</h1>
+                            <div className={styles.form}>
                             <form>
                                 <label>Nombre:</label>
-                                <input autoFocus required type="text" value={name} onChange={(event) => setName(event.target.value)} onInvalid={F => F.target.setCustomValidity('Debe ingresar un nombre')}  />
+                                <input type="text" autoFocus={shouldFocus} disabled={!shouldFocus} required value={name} onChange={(event) => setName(event.target.value)} onInvalid={F => F.target.setCustomValidity('Debe ingresar un nombre')}  />
                                 <label>Telefono:</label>
                                 <input type="text" value={phone} onChange={(event) => setPhone(event.target.value)} />
                                 <label>Comentario:</label>
-                                <input type="textarea" value={comment} onChange={(event) => setComment(event.target.value)} />
+                                <textarea value={comment} onChange={(event) => setComment(event.target.value)} />
                                 <button type="submit" onClick={handleSubmit}>Guardar</button>
                                 <button type="submit" onClick={() => setShowModal(false)}>Cancelar</button>
                                 <button type="submit" onClick={handleDelete}>Borrar</button>
                             </form>
+                            </div>
+                            </div>
+                            {!shouldFocus && (
+                                <>
+                                <div>
+                                    <CurrentAccount turn={props.hora} isPermanent={true} ></CurrentAccount>
+                                    </div>
+                                </>)
+                            }
+
                         </div>
                     </div>
                 )

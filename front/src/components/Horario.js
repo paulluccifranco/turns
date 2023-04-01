@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import {url}  from '../helpers/api';
+import { url } from '../helpers/api';
 import styles from '../assets/Horario.module.css';
 import { Sells } from './Sells';
+import { CurrentAccount } from './CurrentAccount';
 
 export function Horario(props) {
 
@@ -20,29 +21,13 @@ export function Horario(props) {
         { value: 12, hora: '00:00' }
     ];
 
-    const horariosCancha4 = [
-        { value: 1, hora: '08:00' },
-        { value: 2, hora: '09:30' },
-        { value: 3, hora: '11:00' },
-        { value: 4, hora: '12:30' },
-        { value: 5, hora: '14:00' },
-        { value: 6, hora: '15:30' },
-        { value: 7, hora: '17:00' },
-        { value: 8, hora: '18:30' },
-        { value: 9, hora: '20:00' },
-        { value: 10, hora: '21:30' },
-        { value: 11, hora: '23:00' },
-        { value: 12, hora: '00:30' }
-    ];
-
-
     const [showModal, setShowModal] = useState(false);
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [comment, setComment] = useState('');
     const [stateId, setStateId] = useState('');
     const [shouldFocus, setShouldFocus] = useState(false);
-    
+
 
 
     function openModal() {
@@ -54,16 +39,10 @@ export function Horario(props) {
         setShowModal(true);
     }
 
-    
 
-    function showHorario(field, hour) {
-        let hora = "";
-        if (field === 4) {
-            hora = horariosCancha4.find((hora) => hora.value === hour);
-        } else {
-            hora = horariosCanchas.find((hora) => hora.value === hour);
-        }
 
+    function showHorario(hour) {
+        let hora = horariosCanchas.find((hora) => hora.value === hour);
         return hora.hora;
     }
 
@@ -78,10 +57,10 @@ export function Horario(props) {
             return '#4ABEEA';
         }
         if (state === 4) {
-            return 'red';
+            return '#FF9090';
         }
         if (state === 5) {
-            return 'green';
+            return '#87FF9F';
         }
     }
 
@@ -94,9 +73,10 @@ export function Horario(props) {
             const id = props.hora.id;
             const field = props.hora.field;
             const hour = props.hora.hour;
-            const day = new Date(props.hora.day.substring(0,10)+"T00:00:00-03:00");
+            const day = new Date(props.hora.day.substring(0, 10) + "T00:00:00-03:00");
             const weekDay = props.hora.weekDay;
-            const data = { name, phone, comment, id, field, hour, day, stateId, weekDay };
+            const permanentTurnId = props.hora.permanentTurnId;
+            const data = { name, phone, comment, id, field, hour, day, stateId, weekDay, permanentTurnId };
             fetch(`${url}/turns`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -110,11 +90,11 @@ export function Horario(props) {
 
     };
 
-    
+
 
     const handleDelete = (event) => {
         event.preventDefault();
-        const day = new Date(props.hora.day.substring(0,10)+"T00:00:00-03:00");
+        const day = new Date(props.hora.day.substring(0, 10) + "T00:00:00-03:00");
         fetch(`${url}/turns/${props.hora.id}`, {
             method: 'DELETE'
         })
@@ -136,20 +116,22 @@ export function Horario(props) {
         <>
             <div className="turn" style={{ backgroundColor: stateStyle(props.hora.stateId) }} onClick={() => openModal()}>
                 <div style={{ position: 'absolute', marginLeft: 230, marginBottom: 30, fontSize: 11 }}>{props.hora.permanentTurnId === null ? '' : 'Turno Fijo'}</div>
+                <div style={{ position: 'absolute', marginLeft: -230, marginBottom: 30, fontSize: 11 }}>{props.hora.stateId === 6 ? 'Confirmado' : ''}</div>
                 {props.hora.name || '---'}
             </div>
 
             {
                 showModal && (
                     <div className={styles.modalContainer}>
-                        <h6 className={styles.title}> Cancha {props.hora.field}  Horario: {showHorario(props.hora.field, props.hora.hour)} HS</h6>
+                        <h6 className={styles.title}> Cancha {props.hora.field}  Horario: {showHorario(props.hora.hour)} HS</h6>
                         <button type="close" onClick={() => setShowModal(false)}>X</button>
                         <div className={styles.modal}>
+                            <div>
+                            <h1>Turno</h1>
                             <div className={styles.form}>
-                                <h1>Turno</h1>
                                 <form>
                                     <label >Nombre:</label>
-                                    <input autoFocus={shouldFocus} required type="text" value={name} onChange={(event) => setName(event.target.value)} onInvalid={F => F.target.setCustomValidity('Debe ingresar un nombre')} />
+                                    <input autoFocus={shouldFocus} disabled={!shouldFocus} required type="text" value={name} onChange={(event) => setName(event.target.value)} onInvalid={F => F.target.setCustomValidity('Debe ingresar un nombre')} />
                                     <label>Telefono:</label>
                                     <input type="text" value={phone} onChange={(event) => setPhone(event.target.value)} />
                                     <label>Comentario:</label>
@@ -157,6 +139,7 @@ export function Horario(props) {
                                     <label>Estado del Turno:</label>
                                     <select className={styles.selector} value={stateId} onChange={e => setStateId(e.target.value)}>
                                         <option value="1">Por Jugar</option>
+                                        <option value="6">Confirmado</option>
                                         <option value="2">Jugando</option>
                                         <option value="3">Terminado</option>
                                         <option value="4">Falto</option>
@@ -168,10 +151,14 @@ export function Horario(props) {
                                     </div>
                                 </form>
                             </div>
-                            <Sells turnId={props.hora.id}></Sells>
-                            <div className={styles.currentAccount}>
-                                <h1>Cuenta Corriente</h1>
                             </div>
+                            {!shouldFocus && (
+                                <>
+                                    <Sells turnId={props.hora.id}></Sells>
+                                    <CurrentAccount turn={props.hora} isPermanent={false}></CurrentAccount>
+                                </>)
+                            }
+
                         </div>
                     </div>
                 )

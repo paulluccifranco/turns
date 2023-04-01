@@ -1,6 +1,7 @@
 package com.back.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 
@@ -17,6 +18,7 @@ import java.math.BigDecimal;
 @Table(name="DAILY_SELL")
 @Getter
 @Setter
+@NoArgsConstructor
 public class DailySell implements Serializable {
 
     @Id

@@ -4,8 +4,6 @@ import { CustomProvider, DatePicker } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import ListadoHorarios from './ListadoHorarios';
 import ListadoCancha from './ListadoCancha';
-import ListadoCancha4 from './ListadoCancha4';
-import TimeListRigth from './TimeListRigth';
 import {url} from '../helpers/api';
 import es_AR from 'rsuite/locales/es_AR';
 import styles from '../assets/Horario.module.css';
@@ -49,9 +47,8 @@ function ListadoTurnos() {
     <div>
       <header className="fixed-panel">
         <div>
-          <span style={{ width: 200, marginLeft: 400, fontWeight: 'bold', fontSize: 20 }}>Listado de Turnos</span>
           <CustomProvider locale={es_AR}>
-            <DatePicker oneTap style={{ width: 200, marginLeft: 200 }} value={selectedDate} onSelect={handleCalendarClick} />
+            <DatePicker oneTap editable={false} className={styles.datePicker} value={selectedDate} onSelect={handleCalendarClick} />
           </CustomProvider>
           <button style={{ width: 200, marginLeft: 400, fontWeight: 'bold', fontSize: 20 }} onClick={() => setShowResume(true)}>Resumen de Turnos</button>
         </div>
@@ -77,8 +74,8 @@ function ListadoTurnos() {
           <ListadoCancha turnos={data.filter(turno => turno.field === 1)} handleCalendarClick={handleCalendarClick} />
           <ListadoCancha turnos={data.filter(turno => turno.field === 2)} handleCalendarClick={handleCalendarClick} />
           <ListadoCancha turnos={data.filter(turno => turno.field === 3)} handleCalendarClick={handleCalendarClick} />
-          <ListadoCancha4 turnos={data.filter(turno => turno.field === 4)} handleCalendarClick={handleCalendarClick} />
-          <TimeListRigth></TimeListRigth>
+          <ListadoCancha turnos={data.filter(turno => turno.field === 4)} handleCalendarClick={handleCalendarClick} />
+          <ListadoHorarios></ListadoHorarios>
         </div>
       )}
       {showResume && (

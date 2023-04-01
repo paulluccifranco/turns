@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { url } from '../helpers/api';
-import styles from '../assets/Horario.module.css';
+import styles from '../assets/Sells.module.css';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 
 export function Sells(props) {
 
     const [dailySells, setDailySells] = useState([]);
     const [products, setProducts] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
     const [code, setCode] = useState('');
-    const [description, setDescription] = useState('');
-    const [units, setUnits] = useState('');
+    const [units, setUnits] = useState(1);
     const [shouldFocus, setShouldFocus] = useState(true);
     const [optionList, setOptionList] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const inputRef = useRef(null);
 
     useEffect(() => {
         handleProductList();
@@ -27,14 +28,11 @@ export function Sells(props) {
         setUnits(newValue);
     }
 
-    const handleSearchTermChange = event => {
-        setSearchTerm(event.target.value);
-    };
-
-    const handleParticipantSelect = (participant) => {
+    const handleProductSelect = (product) => {
         setOptionList([]);
-        setSearchValue('');
-        setSelectedProduct(participant);
+        setSearchValue(product.description);
+        setSelectedProduct(product);
+        setCode(product.code);
     }
 
     const handleProductList = () => {
@@ -52,24 +50,63 @@ export function Sells(props) {
             .catch(error => console.log(error));
     }
 
-    const saveDailySell = (event) => {
-        event.preventDefault();
-        const turnId = props.turnId;
-        const productId = 2;
-        const description = "Elpepe";
-        const units = 2;
-        const productPrice = 180.50;
-        const data = { turnId, productId, description, units, productPrice };
-        fetch(`${url}/daily-sell`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.error(error))
-            .finally(() => cleanSell());
+    function saveDailySell(prod, units) {
+        if (prod !== null) {
+            const turnId = props.turnId;
+            const productId = prod.id;
+            const description = prod.description;
+            const productPrice = prod.price;
+            const data = { turnId, productId, description, units, productPrice };
+            fetch(`${url}/daily-sell`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error(error))
+                .finally(() => { cleanSell(); getDailySell() });
+        } else {
+            NotificationManager.error('Producto no Encontrado', 'Producto Inexistente', 2000);
+            cleanSell();
+        }
+
     };
+
+    function saveSells() {
+            const turnId = props.turnId;
+            fetch(`${url}/sells/${turnId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify('')
+            })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error(error))
+                .finally(() => { cleanSell(); getDailySell() });
+
+    };
+
+    const handleDelete = (id) => {
+        fetch(`${url}/daily-sell/${id}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al eliminar el turno');
+                }
+                console.log('El turno ha sido eliminado correctamente');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            }).finally(() => { cleanSell(); getDailySell() });
+
+    };
+
+    function substractUnit(dailySell, units) {
+        const product = { id: dailySell.productId, description: dailySell.description, price: dailySell.productPrice };
+        saveDailySell(product, units);
+    }
 
     const handleSearchChange = (e) => {
         setSearchValue(e.target.value);
@@ -78,29 +115,55 @@ export function Sells(props) {
         } else {
             setOptionList([]);
         }
-        console.log(products);
-        console.log(optionList);
     }
 
     const compareProduct = (obj, str) => {
-        console.log(obj);
-        console.log(str);
         return obj.description.toLowerCase().includes(str.toLowerCase());
+    }
+
+    const compareProductCode = (obj, str) => {
+        return obj.code === str;
+    }
+
+    function handleKeyDown(event) {
+        if (event.key === 'Escape') {
+            const product = products.filter(prod => compareProductCode(prod, code));
+            if (product.length) {
+                saveDailySell(product[0], units);
+            } else {
+                NotificationManager.error('Producto no Encontrado', 'Codigo Incorrecto', 2000);
+                cleanSell();
+            }
+
+        }
+    }
+
+    function getTotals() {
+        var total = 0;
+        dailySells.map(dailySell => {
+            var productTotal = dailySell.units * dailySell.productPrice;
+            total = total + productTotal;
+        });
+        return total;
     }
 
     function cleanSell() {
         setCode('');
-        setSearchTerm('');
-        setUnits('');
+        setSelectedProduct(null);
+        setSearchValue('');
+        setUnits(1);
+        inputRef.current.focus();
     }
 
     return (
         <>
             <div className={styles.sells}>
+                <NotificationContainer />
                 <h1>Venta</h1>
-                <form>
+                <div>
+                <form className={styles.form}>
                     <label >Codigo:</label>
-                    <input autoFocus={!shouldFocus} type="text" value={code} onChange={(event) => setCode(event.target.value)} />
+                    <input autoFocus={shouldFocus} type="text" value={code} ref={inputRef} onKeyDown={handleKeyDown} onChange={(event) => setCode(event.target.value)} />
                     <label>Nombre:</label>
                     <input type="text" value={searchValue} onChange={handleSearchChange} />
                     {
@@ -108,7 +171,7 @@ export function Sells(props) {
                             <div className={styles.optionsContainer}>
                                 {
                                     optionList.map(option => (
-                                        <div className={styles.optionItem} key={option.id} onClick={() => handleParticipantSelect(option)}>
+                                        <div className={styles.optionItem} key={option.id} onClick={() => handleProductSelect(option)}>
                                             <span>
                                                 {option.description}
                                             </span>
@@ -119,39 +182,55 @@ export function Sells(props) {
                         )
                     }
 
+                    <label>Precio:</label>
+                    <input type="text" value={'$' + (selectedProduct !== null ? selectedProduct.price : '')} disabled={true} />
+
 
                     <label>Cantidad:</label>
                     <input type="text" value={units} onChange={handleInputChange} />
                     <div className='button-container'>
-                        <button type="button" onClick={saveDailySell}>Guardar</button>
+                        <button type="button" onClick={() => saveDailySell(selectedProduct, units)}>Guardar</button>
                         <button type="button" onClick={cleanSell}>Borrar</button>
                     </div>
                 </form>
-                <div className={styles.sellsList}>
-                    <h1>Listado de Productos</h1>
+                <h1>Cola de Ventas</h1>
+                <div className={styles.sellsList}>                    
                     <table>
                         <thead>
                             <tr>
                                 <th style={{ width: '25%' }}>Description</th>
-                                <th style={{ width: '40%' }}>Unidades</th>
-                                <th style={{ width: '5%' }}>Precio</th>
+                                <th style={{ width: '10%' }}>Unidades</th>
+                                <th style={{ width: '15%' }}>Precio</th>
+                                <th style={{ width: '20%' }}>Total</th>
                                 <th style={{ width: '30%' }}>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
+                            <tr>
+                                <td>TOTAL:</td>
+                                <td>---</td>
+                                <td>---</td>
+                                <td>${getTotals()}</td>
+                                <td>
+                                    <button type="button" onClick={() => saveSells()}>CERRAR</button>
+                                    <button type="button">CANCELAR</button>
+                                </td>
+                            </tr>
                             {Array.from(dailySells).map((dailySell) => (
                                 <tr>
                                     <td>{dailySell.description}</td>
                                     <td>{dailySell.units}</td>
-                                    <td>{dailySell.productPrice}</td>
+                                    <td>${dailySell.productPrice}</td>
+                                    <td>${dailySell.units * dailySell.productPrice}</td>
                                     <td>
-                                        <button type="button">Editar</button>
-                                        <button type="button">Restar</button>
+                                        <button type="button" onClick={() => substractUnit(dailySell, -1)}>Restar</button>
+                                        <button type="button" onClick={() => handleDelete(dailySell.id)}>Eliminar</button>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
+                </div>
                 </div>
             </div>
 

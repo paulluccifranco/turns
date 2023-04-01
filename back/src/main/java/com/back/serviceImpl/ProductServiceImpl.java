@@ -16,7 +16,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getProductList() {
-        return productRepository.findAll();
+        return productRepository.findAllByOrderByDescriptionAsc();
     }
 
     @Override

@@ -1,0 +1,104 @@
+.sells {
+    grid-row: span 2;
+}
+
+.form {
+    display: block;
+    width: 700px;
+    height: 350px;
+    padding: 16px;
+    margin: auto;
+    background-color: rgba(252, 234, 135, 0.788);
+}
+
+.form label {
+    width: 20%;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.form input[type="text"] {
+    width: 80%;
+    padding: 3px 10px;
+    border: 1px solid #f6f6f6;
+    border-radius: 3px;
+    background-color: #f6f6f6;
+    margin: 8px 0;
+    display: inline-block;
+}
+
+.form input[type="number"] {
+    width: 80%;
+    padding: 3px 10px;
+    border: 1px solid #f6f6f6;
+    border-radius: 3px;
+    background-color: #f6f6f6;
+    margin: 8px 0;
+    display: inline-block;
+}
+
+.form button[type="submit"] {
+    width: 100px;
+    padding: 8px 16px;
+    margin: 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #000;
+}
+
+.form button[type="button"] {
+    width: 100px;
+    padding: 8px 16px;
+    margin: 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #000;
+}
+
+.sellsList {
+    border: 1px solid black;
+    overflow-y:scroll;
+    background-color: #ccc;
+    justify-content: center;
+
+  align-items: center;
+  background-color: #fff;
+  margin: 10px;
+  box-shadow: 0px 2px 8px #3333334f;
+  border-radius: 8px;
+}
+
+.sellsList table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.sellsList th, .sellsList td {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.optionsContainer{
+    position: fixed;
+    background-color: #fff;
+    margin-left: 130px;
+    width: 550px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    max-height: 200px;
+    overflow: scroll;
+}
+
+.optionItem {
+    border-bottom: 1px solid black;
+}
+
+.optionItem:hover{
+    background-color: #bbf188;
+    cursor: pointer;
+}

@@ -4,6 +4,7 @@ import '../assets/Menu.css';
 import ListadoTurnos from './ListadoTurnos';
 import ListadoFijos from './ListadoFijos';
 import Products from './Products';
+import HistorySells from './HistorySells';
 
 function LeftPanel() {
 
@@ -28,12 +29,14 @@ const [pantallaActual, setPantallaActual] = useState("Turnos");
         <li onClick={() => cambiarPantalla("Turnos")} style={{backgroundColor: stateStyle("Turnos")}}>Turnos</li>
             <li onClick={() => cambiarPantalla("TurnosFijos")} style={{backgroundColor: stateStyle("TurnosFijos")}}>Turnos Fijos</li>
             <li onClick={() => cambiarPantalla("Products")} style={{backgroundColor: stateStyle("Products")}}>Productos</li>
+            <li onClick={() => cambiarPantalla("Ventas")} style={{backgroundColor: stateStyle("Ventas")}}>Ventas</li>
           </ul>
         </div>
     </div>
     {pantallaActual === "Turnos" && <ListadoTurnos />}
     {pantallaActual === "TurnosFijos" && <ListadoFijos />}
     {pantallaActual === "Products" && <Products />}
+    {pantallaActual === "Ventas" && <HistorySells />}
     </>
   );    
 

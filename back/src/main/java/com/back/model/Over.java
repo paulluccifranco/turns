@@ -2,9 +2,8 @@ package com.back.model;
 
 import com.back.enums.Shift;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,41 +15,35 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Data
 @Entity
-@Table(name="SELLS")
-@Getter
-@Setter
 @NoArgsConstructor
-public class Sells implements Serializable {
+@AllArgsConstructor
+@Table(name="OVER_SHIFT", uniqueConstraints =
+        {  @UniqueConstraint(name = "UniqueTurn", columnNames = { "DAY", "SHIFT" })})
+public class Over implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ID")
+    @Column(name = "ID")
     private Long id;
-    @Column(name="PRODUCT_ID")
-    private Long productId;
-    @Column(name="DESCRIPTION")
-    private String description;
-    @Column(name = "PRODUCT_DESCRIPTION")
-    private Integer units;
-    @Column(name = "PRODUCT_PRICE")
-    private BigDecimal productPrice;
-    @Column(name = "DATE")
+    @Column(name = "DAY")
     @Temporal(TemporalType.DATE)
     private Date date;
     @Column(name = "SHIFT", length = 15)
     @Enumerated(EnumType.ORDINAL)
     private Shift shift;
-
-    public Sells(Long productId, String description, Integer units, BigDecimal productPrice, Date date) {
-        this.productId = productId;
-        this.description = description;
-        this.units = units;
-        this.productPrice = productPrice;
-        this.date = date;
-    }
+    @Column(name = "EMPLOYEE", length = 40)
+    private String employee;
+    @Column(name = "WANTING_TURN")
+    private Integer wantingTurn;
+    @Column(name = "PAYED_TURN")
+    private Integer payedTurn;
+    @Column(name = "SELLS_AMOUNT")
+    private BigDecimal sellsAmount;
 }
