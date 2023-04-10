@@ -1,0 +1,61 @@
+.generalParametersFrame {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    height: 850px;
+    width: 1550px;
+  margin-top: 80px;
+  margin-left: 310px;
+  background-color: #f2f2f2;
+}
+
+.modalContainer {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    background-color: #333333a8;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(1px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pricesModal {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    background-color: #fff;
+    width: 1500px;
+    height: 900px;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.turnValuesForm {
+    grid-column: 4;
+}
+
+.turnValuesForm label {
+    font-weight: bold;
+    display: inline-block;
+}
+
+.turnValuesForm input[type="text"] {
+    padding: 3px 10px;
+    border: 1px solid #f6f6f6;
+    border-radius: 3px;
+    background-color: #f6f6f6;
+    margin: 8px 0;
+    display: inline-block;
+}
+
+.modalContainer button[type="close"] {
+    position: fixed;
+    font-size: 16pt;
+    margin-bottom: 860px;
+    margin-left: 1440px;
+    border-radius: 5px;
+    padding-bottom: 10px;
+    background-color: #002cff66;
+}

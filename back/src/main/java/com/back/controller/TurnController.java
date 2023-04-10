@@ -23,7 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST,  RequestMethod.DELETE })
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
 @RestController
 @RequestMapping("/turns")
 @AllArgsConstructor
@@ -33,12 +33,12 @@ public class TurnController {
     private PermanentTurnService permanentTurnService;
 
     @GetMapping("/{date}")
-    public List<Turn> getTurns(@PathVariable("date") String dayUnformated)  {
+    public List<Turn> getTurns(@PathVariable("date") String dayUnformated) {
         System.out.println(dayUnformated);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd yyyy");
         Date day = null;
         try {
-            String date = dayUnformated.substring(4,15);
+            String date = dayUnformated.substring(4, 15);
             day = simpleDateFormat.parse(date);
         } catch (Exception e) {
             System.out.println(e);
@@ -53,12 +53,12 @@ public class TurnController {
         cal2.setTime(day);
         boolean sameDay = (cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
                 cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)) || cal1.before(cal2);
-        for(PermanentTurn permTurn : permanentTurns){
-            if(sameDay){
-                Turn newTurn = new Turn(day, permTurn.getHour(),permTurn.getField(),permTurn.getName(),permTurn.getPhone(),permTurn.getComment(),permTurn.getId(),dayOfWeek);
-                try{
-                    if(!permanentTurnService.getDeletedTurn(day, permTurn.getId())) turnService.saveTurn(newTurn);
-                }catch(Exception ex){
+        for (PermanentTurn permTurn : permanentTurns) {
+            if (sameDay) {
+                Turn newTurn = new Turn(day, permTurn.getHour(), permTurn.getField(), permTurn.getName(), permTurn.getPhone(), permTurn.getComment(), permTurn.getId(), dayOfWeek);
+                try {
+                    if (!permanentTurnService.getDeletedTurn(day, permTurn.getId())) turnService.saveTurn(newTurn);
+                } catch (Exception ex) {
                     System.out.println(ex);
                 }
             }
@@ -66,11 +66,11 @@ public class TurnController {
         }
         List<Turn> turnBase = turnService.getTurnsByDay(day);
         List<Turn> turns = new ArrayList<>();
-        for(int j=1; j<5; j++){
-            for(int i=1; i<13;i++){
+        for (int j = 1; j < 5; j++) {
+            for (int i = 1; i < 13; i++) {
                 Turn turnExist = new Turn(i, j, day, dayOfWeek);
-                for(Turn turn : turnBase){
-                    if(turn.getHour() == i && turn.getField() == j) turnExist = turn;
+                for (Turn turn : turnBase) {
+                    if (turn.getHour() == i && turn.getField() == j) turnExist = turn;
                 }
                 turns.add(turnExist);
             }
@@ -80,22 +80,19 @@ public class TurnController {
 
 
     @DeleteMapping("/{id}")
-    public void deleteTurn(@PathVariable("id") Long id){
+    public void deleteTurn(@PathVariable("id") Long id) {
         Turn turn = turnService.getTurnById(id);
-        if(turn.getPermanentTurnId() != null) permanentTurnService.saveDeletedTurn(turn.getDay(), turn.getPermanentTurnId());
+        if (turn.getPermanentTurnId() != null)
+            permanentTurnService.saveDeletedTurn(turn.getDay(), turn.getPermanentTurnId());
         turnService.deleteTurn(id);
     }
 
     @PostMapping()
-    public void saveTurn(@RequestBody Turn turn){
-        if(turn.getId() != null){
-            if(turn.getPermanentTurnId() != null){
-                permanentTurnService.updatePermanentTurn(turn.getPhone(), turn.getComment(), turn.getName(), turn.getPermanentTurnId());
-                turnService.updatePermanentTurns(turn.getPhone(), turn.getComment(), turn.getName(), turn.getPermanentTurnId());
-            }
-            turnService.updateTurn(turn.getPhone(), turn.getComment(), turn.getName(), turn.getStateId(), turn.getId());
-        }else{
-            turnService.saveTurn(turn);
+    public void saveTurn(@RequestBody Turn turn) {
+        if (turn.getPermanentTurnId() != null) {
+            permanentTurnService.updatePermanentTurn(turn.getPhone(), turn.getComment(), turn.getName(), turn.getPermanentTurnId());
+            turnService.updatePermanentTurns(turn.getPhone(), turn.getComment(), turn.getName(), turn.getPermanentTurnId());
         }
+        turnService.saveTurn(turn);
     }
 }

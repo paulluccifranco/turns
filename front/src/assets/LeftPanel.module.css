@@ -14,20 +14,23 @@
 
 .modal {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
     background-color: #fff;
-    width: 1500px;
+    width: 750px;
     height: 900px;
     border-radius: 8px;
     padding: 20px;
+}
+
+.modal h1 {
+    text-align: center;
 }
 
 .modalContainer button[type="close"] {
     position: fixed;
     font-size: 16pt;
     margin-bottom: 860px;
-    margin-left: 1440px;
+    margin-left: 720px;
     border-radius: 5px;
     padding-bottom: 10px;
     background-color: #002cff66;
@@ -104,48 +107,4 @@
 
 .modalContainer .form button[type="button"]:hover {
     cursor: pointer;
-}
-
-.title {
-    position: fixed;
-    font-size: 16pt;
-    padding: 5px;
-    margin-bottom: 900px;
-    border-radius: 5px;
-    height: 30px;
-    background-color: #bfd014;
-}
-
-
-.modal h1 {
-    align-items: center;
-}
-
-.selector {
-    display: inline;
-    width: 600px;
-    height: 30px;
-}
-
-.datePicker {
-    position: fixed;
-    margin-top: 2px;
-    width: 300px;
-    margin-left: 650px;
-    text-align: center;
-}
-
-.resumeButton {
-    background-color: #bfd014;
-    border-radius: 20px;
-    margin-top: 2px;
-    width: 300px;
-    margin-left: 400px;
-    font-weight: bold;
-    font-size: 20pt;
-}
-
-.whatsappButton {
-    position: fixed;
-    left: 0px;
 }

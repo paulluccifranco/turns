@@ -15,6 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -48,6 +49,10 @@ public class Turn implements Serializable {
     private int stateId;
     @Column(name = "PERMANENT_TURN_ID")
     private Long permanentTurnId;
+    @Column(name = "TURN_VALUE")
+    private BigDecimal turnValue;
+    @Column(name = "SHIFT_ID")
+    private Long shiftId;
 
     public Turn(int hour, int field, Date date, int weekDay) {
         this.hour = hour;

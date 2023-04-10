@@ -1,8 +1,7 @@
 package com.back.model;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,24 +15,19 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Data
 @Entity
-@Table(name="CURRENT_ACCOUNT")
-@Getter
-@Setter
 @NoArgsConstructor
-public class CurrentAccount implements Serializable {
+@Table(name="MOVEMENTS")
+public class Movement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ID")
+    @Column(name = "ID")
     private Long id;
-    @Column(name="PERMANENT_TURN_ID")
-    private Long permanentTurnId;
-    @Column(name="TURN_ID")
-    private Long turnId;
-    @Column(name="DESCRIPTION")
+    @Column(name = "DESCRIPTION")
     private String description;
-    @Column(name="AMOUNT")
+    @Column(name = "AMOUNT")
     private BigDecimal amount;
     @Column(name = "SHIFT_ID")
     private Long shiftId;

@@ -1,48 +1,32 @@
+import ShiftContext from '../contexts/ShiftContext';
 import React, { useEffect, useState, useContext } from 'react'
 import { url } from '../helpers/api';
-import styles from '../assets/CurrentAccount.module.css';
+import styles from '../assets/Movements.module.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
-import ShiftContext from '../contexts/ShiftContext';
 
-export function CurrentAccount(props) {
+export default function Movement() {
 
     const shift = useContext(ShiftContext);
-    const [currentAccount, setCurrentAccount] = useState([]);
+    const [movements, setMovements] = useState([]);
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
     const negativeAmount = { color: 'red' };
     const positiveAmount = { color: 'green' };
 
     useEffect(() => {
-        loadCurrentAccountData();
+        getShiftMovements();
     }, []);
 
-    const getCurrentAccountByTurn = () => {
-        const id = props.turn.id;
-        fetch(`${url}/current-account/turn/${id}`)
+    const getShiftMovements = () => {
+        const shiftId = shift.id;
+        fetch(`${url}/movement/${shiftId}`)
             .then(response => response.json())
-            .then(data => setCurrentAccount(data))
+            .then(data => setMovements(data))
             .catch(error => console.log(error));
     }
 
-    const getCurrentAccountByPermanentTurn = () => {
-        const id = props.isPermanent ? props.turn.id : props.turn.permanentTurnId;
-        fetch(`${url}/current-account/permanent-turn/${id}`)
-            .then(response => response.json())
-            .then(data => setCurrentAccount(data))
-            .catch(error => console.log(error));
-    }
-
-    const loadCurrentAccountData = () => {
-        if (props.turn.permanentTurnId === null) {
-            getCurrentAccountByTurn();
-        } else {
-            getCurrentAccountByPermanentTurn();
-        }
-    }
-
-    function saveCurrentAccount() {
+    function saveMovement() {
         if (!description) {
             NotificationManager.error('La descripción no puede estar vacía', 'Error al Agregar Importe', 2000);
             return;
@@ -51,13 +35,9 @@ export function CurrentAccount(props) {
             NotificationManager.error('Debe indicar un importe', 'Error al Agregar Importe', 2000);
             return;
         }
-        console.log(props.turn);
-        const permanentTurnId = props.isPermanent ? props.turn.id : props.turn.permanentTurnId;
-        const turnId = props.turn.id;
         const shiftId = shift.id;
-        const data = { permanentTurnId, turnId, description, amount, shiftId };
-        console.log(data);
-        fetch(`${url}/current-account`, {
+        const data = { shiftId, description, amount };
+        fetch(`${url}/movement`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -71,13 +51,13 @@ export function CurrentAccount(props) {
             .then(response => response.json())
             .then(data => console.log(data))
             .catch(error => console.error(error))
-            .finally(() => {clearFields();loadCurrentAccountData()});
+            .finally(() => {clearFields();getShiftMovements()});
     };
 
     function getTotals() {
         let total = 0;
-        currentAccount.map(currAcc => {
-            total = Number(total) + Number(currAcc.amount);
+        movements.map(mov => {
+            total = Number(total) + Number(mov.amount);
         });
         return total;
     }
@@ -87,18 +67,17 @@ export function CurrentAccount(props) {
         setAmount('');
     }
 
-
     return (
         <>
             <NotificationContainer className="custom-notification-container" />
-            <h1>Cuenta Corriente</h1>
+            <h1>Movimientos</h1>
             <div className={styles.currentAccountContainer}>
             <form className={styles.form}>
                 <label htmlFor="description">Description del producto:</label>
                 <input type="text" id="description" value={description} onChange={(e) => setDescription(e.target.value)} /><br />
                 <label htmlFor="price">Precio del producto:</label>
                 <input type="number" id="price" value={amount} onChange={(e) => setAmount(e.target.value)} /><br /><br />
-                <button type="button" onClick={saveCurrentAccount}>Agregar Importe</button>
+                <button type="button" onClick={saveMovement}>Agregar Importe</button>
             </form>
             <div className={styles.currentAccountList}>
 
@@ -116,11 +95,11 @@ export function CurrentAccount(props) {
                             <td style={getTotals() < 0 ? negativeAmount : positiveAmount}>${getTotals()}</td>
                             <td>---</td>
                         </tr>
-                        {Array.from(currentAccount).map((currAcc, index) => (
+                        {Array.from(movements).map((mov, index) => (
                             <tr key={index}>
-                                <td>{currAcc.description}</td>
-                                <td style={currAcc.amount < 0 ? negativeAmount : positiveAmount}>${currAcc.amount}</td>
-                                <td>{currAcc.date}</td>
+                                <td>{mov.description}</td>
+                                <td style={mov.amount < 0 ? negativeAmount : positiveAmount}>${mov.amount}</td>
+                                <td>{mov.date}</td>
                             </tr>
                         ))}
                     </tbody>

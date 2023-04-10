@@ -1,15 +1,11 @@
 package com.back.model;
 
-import com.back.enums.Shift;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,6 +29,8 @@ public class Sells implements Serializable {
     private Long id;
     @Column(name="PRODUCT_ID")
     private Long productId;
+    @Column(name = "TURN_ID")
+    private Long turnId;
     @Column(name="DESCRIPTION")
     private String description;
     @Column(name = "PRODUCT_DESCRIPTION")
@@ -42,15 +40,16 @@ public class Sells implements Serializable {
     @Column(name = "DATE")
     @Temporal(TemporalType.DATE)
     private Date date;
-    @Column(name = "SHIFT", length = 15)
-    @Enumerated(EnumType.ORDINAL)
-    private Shift shift;
+    @Column(name = "SHIFT")
+    private Long shiftId;
 
-    public Sells(Long productId, String description, Integer units, BigDecimal productPrice, Date date) {
+    public Sells(Long productId, String description, Integer units, BigDecimal productPrice, Date date, Long shiftId, Long turnId) {
         this.productId = productId;
         this.description = description;
         this.units = units;
         this.productPrice = productPrice;
         this.date = date;
+        this.shiftId = shiftId;
+        this.turnId = turnId;
     }
 }

@@ -16,18 +16,9 @@ import java.util.Optional;
 public interface TurnRepository extends JpaRepository<Turn, Long> {
 
     public List<Turn> findByDay(Date day);
-
     public Optional<Turn> findById(Long id);
-
     Turn findByDayAndFieldAndHour(Date day, int field, int Hour);
-
-    @Modifying
-    @Transactional
-    @Query(value = "UPDATE TURN t " +
-            "SET t.PHONE = :phone, t.COMMENT = :comment, " +
-            "t.STATE_ID = :stateId, t.NAME = :name " +
-            "WHERE ID = :id " , nativeQuery = true)
-    void updateTurn(@Param("phone") String phone, @Param("comment") String comment, @Param("name") String name, @Param("stateId") Integer stateId, @Param("id") Long id);
+    List<Turn> findByShiftId(Long shiftId);
 
     @Modifying
     @Transactional

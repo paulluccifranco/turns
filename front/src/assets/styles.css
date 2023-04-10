@@ -62,7 +62,7 @@
   width: 135px;
   text-align: center;
   font-weight: bold;
-  margin-top: 20px;
+  margin-top: 60px;
 }
 
 
@@ -100,10 +100,7 @@
 
 .calendar {
   align-items: center;
-}
-
-.logo {
-  width: 200px;
+  position: fixed;
 }
 
 .left-panel {
@@ -143,4 +140,11 @@
 
 .panel-menu li:first-child {
   border-top: 1px solid #ccc;
+}
+
+.custom-notification-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 0;
 }

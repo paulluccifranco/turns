@@ -39,11 +39,6 @@ public class TurnServiceImpl implements TurnService {
     }
 
     @Override
-    public void updateTurn(String phone, String comment, String name, Integer stateId, Long id) {
-        turnRepository.updateTurn(phone, comment, name, stateId, id);
-    }
-
-    @Override
     public Turn getTurnById(Long id) {
         return turnRepository.findById(id).get();
     }
@@ -63,5 +58,10 @@ public class TurnServiceImpl implements TurnService {
     public void deletePermanentTurns(Long permanentTurnId, Date date) {
         turnRepository.deletePermanentTurns(permanentTurnId, date);
 
+    }
+
+    @Override
+    public List<Turn> getTurnsByShiftId(Long shiftId) {
+        return turnRepository.findByShiftId(shiftId);
     }
 }
