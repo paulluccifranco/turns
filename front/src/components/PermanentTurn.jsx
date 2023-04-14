@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {url} from '../helpers/api';
+import { url } from '../helpers/api';
 import styles from '../assets/PermanentTurn.module.css';
 import { CurrentAccount } from './CurrentAccount';
 
@@ -17,7 +17,7 @@ export function PermanentTurn(props) {
         { value: 10, hora: '21:00' },
         { value: 11, hora: '22:30' },
         { value: 12, hora: '00:00' }
-      ];
+    ];
 
     const [showModal, setShowModal] = useState(false);
     const [name, setName] = useState('');
@@ -40,7 +40,7 @@ export function PermanentTurn(props) {
         setPhone(newValue);
     }
 
-    function showHorario(hour){
+    function showHorario(hour) {
         let hora = horariosCanchas.find((hora) => hora.value === hour);
         return hora.hora;
     }
@@ -62,7 +62,7 @@ export function PermanentTurn(props) {
                 body: JSON.stringify(data)
             })
                 .then(response => response.json())
-                .then(data => {if(id === null)setSuperposedTurns(data)})
+                .then(data => { if (id === null) setSuperposedTurns(data) })
                 .catch(error => console.error(error)).finally(() => props.handleCalendarClick(props.hora.day));
             setShowModal(false);
         }
@@ -100,27 +100,42 @@ export function PermanentTurn(props) {
                         <button type="close" onClick={() => setShowModal(false)}>X</button>
                         <div className={styles.modal}>
                             <div>
-                        <h1>Turno Fijo</h1>
-                            <div className={styles.form}>
-                            <form>
-                                <label>Nombre:</label>
-                                <input type="text" autoFocus={shouldFocus} disabled={!shouldFocus} required value={name} onChange={(event) => setName(event.target.value)} onInvalid={F => F.target.setCustomValidity('Debe ingresar un nombre')}  />
-                                <label>Telefono:</label>
-                                <input type="text" value={phone} onChange={handleInputChange} />
-                                <label>Comentario:</label>
-                                <textarea value={comment} onChange={(event) => setComment(event.target.value)} />
-                                <button type="submit" onClick={handleSubmit}>Guardar</button>
-                                <button type="submit" onClick={() => setShowModal(false)}>Cancelar</button>
-                                <button type="submit" onClick={handleDelete}>Borrar</button>
-                            </form>
-                            </div>
+                                <h1>Turno Fijo</h1>
+                                <div className={styles.form}>
+                                    <form>
+                                        <label>Nombre:</label>
+                                        <input type="text" autoFocus={shouldFocus} disabled={!shouldFocus} required value={name} onChange={(event) => setName(event.target.value)} onInvalid={F => F.target.setCustomValidity('Debe ingresar un nombre')} />
+                                        <label>Telefono:</label>
+                                        <input type="text" value={phone} onChange={handleInputChange} />
+                                        <label>Comentario:</label>
+                                        <textarea value={comment} onChange={(event) => setComment(event.target.value)} />
+                                        <button type="submit" onClick={handleSubmit}>Guardar</button>
+                                        <button type="submit" onClick={() => setShowModal(false)}>Cancelar</button>
+                                        <button type="submit" onClick={handleDelete}>Borrar</button>
+                                    </form>
+                                </div>
                             </div>
                             {!shouldFocus && (
                                 <>
-                                <div>
-                                    <CurrentAccount turn={props.hora} isPermanent={true} ></CurrentAccount>
+                                    <div>
+                                        <CurrentAccount turn={props.hora} isPermanent={true} ></CurrentAccount>
                                     </div>
-                                </>)
+                                    <div>
+                                <h1>Reservar Turno</h1>
+                                <div className={styles.reserveForm}>
+                                    <form>
+                                        <label>Nombre:</label>
+                                        <input type="text" autoFocus={shouldFocus} disabled={!shouldFocus} required value={name} onChange={(event) => setName(event.target.value)} onInvalid={F => F.target.setCustomValidity('Debe ingresar un nombre')} />
+                                        <label>Telefono:</label>
+                                        <input type="text" value={phone} onChange={handleInputChange} />
+                                        <button type="submit" onClick={handleSubmit}>Guardar</button>
+                                        <button type="submit" onClick={() => setShowModal(false)}>Cancelar</button>
+                                        <button type="submit" onClick={handleDelete}>Borrar</button>
+                                    </form>
+                                </div>
+                            </div>
+                                </>
+                                )
                             }
 
                         </div>

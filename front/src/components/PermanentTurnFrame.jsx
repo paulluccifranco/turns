@@ -46,6 +46,7 @@ function ListadoFijos() {
             />
           </CustomProvider>
         </div>
+        <button type="button" className={styles.reseveButton}>Reserva de Turno</button>
         <div>
           <div className="cancha"></div>
           <div className="time-header">Horarios</div>

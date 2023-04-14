@@ -8,6 +8,14 @@
   background-color: #f2f2f2;
 }
 
+.generalParametersFrame button{
+    margin-left: 50px;
+    margin-top: 100px;
+    border-radius: 15px;
+    background-color: aqua;
+    font-weight: bold;
+}
+
 .modalContainer {
     position: fixed;
     z-index: 2;
@@ -26,14 +34,10 @@
     display: grid;
     grid-template-rows: repeat(2, 1fr);
     background-color: #fff;
-    width: 1500px;
-    height: 900px;
+    width: 600px;
+    height: 500px;
     border-radius: 8px;
     padding: 20px;
-}
-
-.turnValuesForm {
-    grid-column: 4;
 }
 
 .turnValuesForm label {
@@ -53,9 +57,35 @@
 .modalContainer button[type="close"] {
     position: fixed;
     font-size: 16pt;
-    margin-bottom: 860px;
-    margin-left: 1440px;
+    margin-bottom: 450px;
+    margin-left: 570px;
     border-radius: 5px;
     padding-bottom: 10px;
     background-color: #002cff66;
+}
+
+.pricesList {
+    border: 1px solid black;
+    overflow-y:scroll;
+    background-color: #ccc;
+    justify-content: center;
+
+  align-items: center;
+  background-color: #fff;
+  margin: 10px;
+  box-shadow: 0px 2px 8px #3333334f;
+  border-radius: 8px;
+}
+
+.pricesList table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.pricesList th, .pricesList td {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid #ddd;
 }

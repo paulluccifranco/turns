@@ -34,8 +34,17 @@ export default function GeneralParameters() {
         setTurnValuesModal(false);
     }
 
+    const removeValue = (value) => {
+        const newArray = valuesArray.filter(item => item !== value);
+        const updatedParam = newArray.join(",");
+        saveParameter('TURN_VALUES', updatedParam);
+        setTurnValues(updatedParam);
+        setValuesArray(newArray);
+        setTurnValuesModal(false);
+    }
+
     const saveParameter = (key, value) => {
-        const id = parameter.id;
+        const id = parameter !== null ? parameter.id : null;
         const data = { id, key, value };
         fetch(`${url}/platform-parameter`, {
             method: 'POST',
@@ -64,10 +73,12 @@ export default function GeneralParameters() {
                             <input type="number" id="price" value={newValue} onChange={(e) => setNewValue(e.target.value)} /><br /><br />
                             <button type="button" onClick={saveValue}>Agregar Precio</button>
                         </form>
+                        <div className={styles.pricesList}>
                         <table>
                             <thead>
                                 <tr>
                                     <th>Precios</th>
+                                    <th>Eliminar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -75,10 +86,12 @@ export default function GeneralParameters() {
                                 {valuesArray.map((value, index) => (
                                     <tr key={index}>
                                         <td>{value}</td>
+                                        <td><button type="button" onClick={() => removeValue(value)}>Eliminar Precio</button></td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
             )}

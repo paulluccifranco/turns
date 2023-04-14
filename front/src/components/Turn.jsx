@@ -31,6 +31,7 @@ export function Horario(props) {
     const [stateId, setStateId] = useState('');
     const [shouldFocus, setShouldFocus] = useState(false);
     const [turnAmount, setTurnAmount] = useState('');
+    const [valuesArray, setValuesArray] = useState([]);
 
 
 
@@ -41,6 +42,7 @@ export function Horario(props) {
         setStateId(props.hora.stateId);
         props.hora.id === null ? setShouldFocus(true) : setShouldFocus(false);
         setShowModal(true);
+        showTurnValues();
     }
 
     function handleInputChange(event) {
@@ -124,6 +126,16 @@ export function Horario(props) {
         window.open(`https://wa.me/549${phone}?text=${messagge}`, "_blank");
     }
 
+    function showTurnValues() {
+        const key = "TURN_VALUES";
+        fetch(`${url}/platform-parameter/${key}`)
+            .then(response => response.json())
+            .then(data => {
+                setValuesArray(data.value.split(','));
+            })
+            .catch(error => console.log(error));
+    }
+
 
     return (
         <>
@@ -156,23 +168,24 @@ export function Horario(props) {
                                         <label>Comentario:</label>
                                         <textarea value={comment} onChange={(event) => setComment(event.target.value)} />
                                         <div className={styles.selector}>
-                                        <label>Estado del Turno:</label>
-                                        <select value={stateId} onChange={e => setStateId(e.target.value)}>
-                                            <option value="1">Por Jugar</option>
-                                            <option value="6">Confirmado</option>
-                                            <option value="2">Jugando</option>
-                                            <option value="3">Terminado</option>
-                                            <option value="4">Falto</option>
-                                            <option value="5">Pago</option>
-                                        </select>
+                                            <label>Estado del Turno:</label>
+                                            <select value={stateId} onChange={e => setStateId(e.target.value)}>
+                                                <option value="1">Por Jugar</option>
+                                                <option value="6">Confirmado</option>
+                                                <option value="2">Jugando</option>
+                                                <option value="3">Terminado</option>
+                                                <option value="4">Falto</option>
+                                                <option value="5">Pago</option>
+                                            </select>
                                         </div>
                                         <div className={styles.selector}>
-                                        <label>Valor del Turno:</label>
-                                        <select value={turnAmount} onChange={e => setTurnAmount(e.target.value)}>
-                                            <option value="0">$0</option>
-                                            <option value="1500">$1500</option>
-                                            <option value="2000">$2000</option>
-                                        </select>
+                                            <label>Valor del Turno:</label>
+                                            <select value={turnAmount} onChange={e => setTurnAmount(e.target.value)}>
+                                                <option value="0">$0</option>
+                                                {valuesArray.map((value, index) => (
+                                                    <option value={value}>${value}</option>
+                                                ))}                                                
+                                            </select>
                                         </div>
                                         <div className='button-container'>
                                             <button type="submit" onClick={handleSubmit}>Guardar</button>

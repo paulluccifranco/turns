@@ -40,6 +40,16 @@ services:
       - back
     networks:
       - my_network
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mysql-db
+      MYSQL_ROOT_PASSWORD: turnos
+    ports:
+      - "8081:80"
+    networks:
+      - my_network
 
 networks:
   my_network:
