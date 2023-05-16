@@ -42,4 +42,10 @@ public class ShiftServiceImpl implements ShiftService {
         Shift newShift = new Shift();
         shiftRepository.save(newShift);
     }
+
+    @Override
+    public void openLastShift() {
+        Shift shift = shiftRepository.findFirstByOrderByIdDesc();
+        shiftRepository.deleteById(shift.getId());
+    }
 }

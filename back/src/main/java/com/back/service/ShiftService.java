@@ -11,4 +11,5 @@ public interface ShiftService {
     public Shift getById(Long shiftId);
     public void save(Shift shift);
     public void closeShift(Long id);
+    public void openLastShift();
 }

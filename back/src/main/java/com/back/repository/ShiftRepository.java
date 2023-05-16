@@ -12,4 +12,5 @@ public interface ShiftRepository extends JpaRepository<Shift, Long> {
     public List<Shift> findAllByOrderByDateDesc();
     public Shift findTopByOrderByIdDesc();
     public Shift findByDateAndShiftEnum(Date date, ShiftEnum shiftEnum);
+    public Shift findFirstByOrderByIdDesc();
 }

@@ -36,10 +36,10 @@ public class SummaryServiceImpl implements SummaryService {
         Integer payedTurns = 0;
         Integer wantingTurns = 0;
         HashMap<BigDecimal, Integer> turnHashMap = new HashMap<>();
+        HashMap<String, Sells> sellsHashMap = new HashMap<>();
         Shift shift = shiftService.getById(shiftId);
         List<Turn> turnList = turnService.getTurnsByShiftId(shiftId);
         List<Sells> sellsList = sellsService.getSellsByShiftId(shiftId);
-        List<Sells> auxSellList = new ArrayList<>();
         List<Movement> movementList = movementService.getMovementsByShift(shiftId);
 
         for(Turn turn: turnList) {
@@ -78,16 +78,22 @@ public class SummaryServiceImpl implements SummaryService {
         }
         totalAmount = BigDecimal.ZERO;
         for(Sells sell : sellsList) {
+            if(!sellsHashMap.containsKey(sell.getDescription())){
+                sellsHashMap.put(sell.getDescription(), sell);
+            }else {
+                Sells auxSell = sellsHashMap.get(sell.getDescription());
+                auxSell.setUnits(auxSell.getUnits() + sell.getUnits());
+                sellsHashMap.put(sell.getDescription(), auxSell);
+            }
             BigDecimal total = sell.getProductPrice().multiply(new BigDecimal(sell.getUnits()));
             totalAmount = totalAmount.add(total);
-            auxSellList.add(sell);
         }
         messagge.append("\n");
         messagge.append("Ventas: $" + totalAmount);
         messagge.append("\n");
-        for(Sells sell : auxSellList) {
-            BigDecimal total = sell.getProductPrice().multiply(new BigDecimal(sell.getUnits()));
-            messagge.append(sell.getDescription() + "(" + sell.getUnits() + "): $" + total);
+        for(Map.Entry<String, Sells> entry : sellsHashMap.entrySet()) {
+            BigDecimal total = entry.getValue().getProductPrice().multiply(new BigDecimal(entry.getValue().getUnits()));
+            messagge.append(entry.getKey() + "(" + entry.getValue().getUnits() + "): $" + total);
             messagge.append("\n");
         }
         messagge.append("\n");

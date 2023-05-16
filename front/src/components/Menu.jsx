@@ -64,9 +64,21 @@ function Menu() {
       .then(response => response.json())
       .catch(error => console.log(error));
     window.location.reload();
-
-
   };
+
+  const openLast = (event) => {
+    event.preventDefault();
+    fetch(`${url}/shift/open-last`, {
+        method: 'DELETE'
+    })
+        .then(response => {
+            console.log('El turno ha sido eliminado correctamente');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+        window.location.reload();
+};
 
   function sendWhatsApp() {
     const whatsappTexto = encodeURIComponent(messagge.replace(/\n/g, '\r\n'));
@@ -101,6 +113,7 @@ function Menu() {
                     <option value="TARDE">TARDE</option>
                   </select>
                   <button type="button" onClick={openShift}>Abrir Turno</button>
+                  <button type="button" onClick={openLast}>Abrir Ultimo Turno</button>
                 </form>
 
               </div>
