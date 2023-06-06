@@ -1,10 +1,12 @@
 package com.back.serviceImpl;
 
 import com.back.model.DailySell;
+import com.back.model.Product;
 import com.back.model.Sells;
 import com.back.model.Shift;
 import com.back.repository.SellsRepository;
 import com.back.service.DailySellService;
+import com.back.service.ProductService;
 import com.back.service.SellsService;
 import com.back.service.ShiftService;
 import lombok.AllArgsConstructor;
@@ -20,6 +22,7 @@ public class SellsServiceImpl implements SellsService {
     private final SellsRepository sellsRepository;
     private final DailySellService dailySellService;
     private final ShiftService shiftService;
+    private final ProductService productService;
 
     @Override
     public List<Sells> getSells() {
@@ -34,7 +37,8 @@ public class SellsServiceImpl implements SellsService {
         Shift shift = shiftService.getLast();
         Date closeDate = new Date();
         dailySellList.forEach(dSell -> {
-            Sells sells = new Sells(dSell.getProductId(), dSell.getDescription(), dSell.getUnits(), dSell.getProductPrice(), closeDate, shift.getId(), dSell.getTurnId());
+            Product product = productService.getProduct(dSell.getProductId());
+            Sells sells = new Sells(dSell.getProductId(), dSell.getDescription(), dSell.getUnits(), dSell.getProductPrice(), closeDate, shift.getId(), dSell.getTurnId(), product.getType());
             sellsRepository.save(sells);
             dailySellService.deleteDailySell(dSell.getId());
         });

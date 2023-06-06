@@ -1,5 +1,6 @@
 package com.back.serviceImpl;
 
+import com.back.enums.ProductTypeEnum;
 import com.back.model.Movement;
 import com.back.model.Sells;
 import com.back.model.Shift;
@@ -37,6 +38,7 @@ public class SummaryServiceImpl implements SummaryService {
         Integer wantingTurns = 0;
         HashMap<BigDecimal, Integer> turnHashMap = new HashMap<>();
         HashMap<String, Sells> sellsHashMap = new HashMap<>();
+        HashMap<Integer, List<Sells>> sellsListByType = new HashMap<>();
         Shift shift = shiftService.getById(shiftId);
         List<Turn> turnList = turnService.getTurnsByShiftId(shiftId);
         List<Sells> sellsList = sellsService.getSellsByShiftId(shiftId);
@@ -46,7 +48,7 @@ public class SummaryServiceImpl implements SummaryService {
             if(turn.getStateId() == WANTING_TURN_STATUS_ID) wantingTurns = wantingTurns + 1;
             if(turn.getStateId() == PAYED_TURN_STATUS_ID) {
                 payedTurns = payedTurns + 1;
-                BigDecimal turnValue = turn.getTurnValue();
+                BigDecimal turnValue = turn.getTurnValue() == null ? BigDecimal.ZERO : turn.getTurnValue();
                 if (!turnHashMap.containsKey(turnValue)) {
                     turnHashMap.put(turnValue, 0);
                 }
@@ -73,7 +75,7 @@ public class SummaryServiceImpl implements SummaryService {
             BigDecimal value = entry.getKey();
             Integer units = entry.getValue();
             BigDecimal total = value.multiply(new BigDecimal(units));
-            messagge.append("$" + value + "(" + units + "): $" + total);
+            messagge.append("   " + "$" + value + "(" + units + "): $" + total);
             messagge.append("\n");
         }
         totalAmount = BigDecimal.ZERO;
@@ -91,17 +93,37 @@ public class SummaryServiceImpl implements SummaryService {
         messagge.append("\n");
         messagge.append("Ventas: $" + totalAmount);
         messagge.append("\n");
-        for(Map.Entry<String, Sells> entry : sellsHashMap.entrySet()) {
-            BigDecimal total = entry.getValue().getProductPrice().multiply(new BigDecimal(entry.getValue().getUnits()));
-            messagge.append(entry.getKey() + "(" + entry.getValue().getUnits() + "): $" + total);
-            messagge.append("\n");
+
+        for (Map.Entry<String, Sells> entry : sellsHashMap.entrySet()) {
+            if (!sellsListByType.containsKey(entry.getValue().getType())) {
+                sellsListByType.put(entry.getValue().getType(), new ArrayList<>());
+            }
+            List<Sells> newValue = sellsListByType.get(entry.getValue().getType());
+            newValue.add(entry.getValue());
+            sellsListByType.put(entry.getValue().getType(), newValue);
         }
+
+        for (Map.Entry<Integer, List<Sells>> entry : sellsListByType.entrySet()) {
+            BigDecimal typeTotalAmount = BigDecimal.ZERO;
+            for(Sells sell : entry.getValue()){
+                BigDecimal total = sell.getProductPrice().multiply(new BigDecimal(sell.getUnits()));
+                typeTotalAmount = typeTotalAmount.add(total);
+            }
+            messagge.append(" -" + ProductTypeEnum.getDescriptionByType(entry.getKey()) + ": $" + typeTotalAmount);
+            messagge.append("\n");
+            for(Sells sell : entry.getValue()){
+                BigDecimal total = sell.getProductPrice().multiply(new BigDecimal(sell.getUnits()));
+                messagge.append("     " + sell.getDescription() + "(" + sell.getUnits() + "): $" + total);
+                messagge.append("\n");
+            }
+        }
+
         messagge.append("\n");
         messagge.append("Salidas: ");
         messagge.append("\n");
         for(Movement movement : movementList) {
             if(movement.getAmount().compareTo(BigDecimal.ZERO) == -1) {
-                messagge.append(movement.getDescription() + ": $" + movement.getAmount());
+                messagge.append("   " + movement.getDescription() + ": $" + movement.getAmount());
                 messagge.append("\n");
             }
         }
@@ -110,7 +132,7 @@ public class SummaryServiceImpl implements SummaryService {
         messagge.append("\n");
         for(Movement movement : movementList) {
             if(movement.getAmount().compareTo(BigDecimal.ZERO) == 1) {
-                messagge.append(movement.getDescription() + ": $" + movement.getAmount());
+                messagge.append("   " + movement.getDescription() + ": $" + movement.getAmount());
                 messagge.append("\n");
             }
         }

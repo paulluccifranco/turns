@@ -42,8 +42,10 @@ public class Sells implements Serializable {
     private Date date;
     @Column(name = "SHIFT")
     private Long shiftId;
+    @Column(name = "TYPE")
+    private Integer type = 1;
 
-    public Sells(Long productId, String description, Integer units, BigDecimal productPrice, Date date, Long shiftId, Long turnId) {
+    public Sells(Long productId, String description, Integer units, BigDecimal productPrice, Date date, Long shiftId, Long turnId, Integer type) {
         this.productId = productId;
         this.description = description;
         this.units = units;
@@ -51,5 +53,6 @@ public class Sells implements Serializable {
         this.date = date;
         this.shiftId = shiftId;
         this.turnId = turnId;
+        this.type = type;
     }
 }

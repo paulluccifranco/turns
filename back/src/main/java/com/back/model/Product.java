@@ -35,4 +35,6 @@ public class Product implements Serializable {
     private BigDecimal price;
     @Column(name = "STOCK")
     private Integer stock;
+    @Column(name = "TYPE")
+    private Integer type = 1;
 }

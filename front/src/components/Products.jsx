@@ -17,6 +17,7 @@ function Products() {
     const [id, setId] = useState("");
     const [editStock, setEditStock] = useState("");
     const [newStock, setNewStock] = useState("");
+    const [type, setType] = useState('');
 
     useEffect(() => {
         handleProductList();
@@ -50,7 +51,7 @@ function Products() {
             return;
         }
         const stock = 0;
-        const data = { description, code, price, stock };
+        const data = { description, code, price, stock, type };
         fetch(`${url}/product`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -71,7 +72,7 @@ function Products() {
     const editProduct = (event) => {
         event.preventDefault();
         const stock = editStock;
-        const data = { id, description, code, price, stock };
+        const data = { id, description, code, price, stock, type };
         fetch(`${url}/product`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -127,6 +128,7 @@ function Products() {
         setDescription(product.description);
         setPrice(product.price);
         setEditStock(product.stock);
+        setType(product.type);
         setShowEditModal(true);
     }
 
@@ -136,6 +138,7 @@ function Products() {
         setDescription(product.description);
         setPrice(product.price);
         setEditStock(product.stock);
+        setType(product.type);
         setShowStockModal(true);
     }
 
@@ -155,7 +158,7 @@ function Products() {
 
             </header>
             <div className={styles.productFrame}>
-            <NotificationContainer className="custom-notification-container" />
+                <NotificationContainer className="custom-notification-container" />
                 <div className={styles.productList}>
                     <h1>Listado de Productos</h1>
                     <table>
@@ -177,9 +180,9 @@ function Products() {
                                     <td>{producto.stock}</td>
                                     <td>
                                         <button type="button" onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
-                                        <button type="button" onClick={() => editarProducto(producto)}>Editar Precio</button>
+                                        <button type="button" onClick={() => editarProducto(producto)}>Editar</button>
                                         <button type="button" onClick={() => addStock(producto)}>Agregar Stock</button>
-                                        
+
                                     </td>
                                 </tr>
                             ))}
@@ -191,7 +194,7 @@ function Products() {
                 <div className={styles.modalContainer}>
                     <div className={styles.modal}>
                         <div className={styles.productAdd}>
-                        <NotificationContainer className="custom-notification-container"/>
+                            <NotificationContainer className="custom-notification-container" />
                             <h1>Nuevo Producto</h1>
                             <form>
                                 <label htmlFor="description">Description del producto:</label>
@@ -199,7 +202,16 @@ function Products() {
                                 <label htmlFor="code">Código del producto:</label>
                                 <input type="text" id="code" value={code} onChange={(e) => setCode(e.target.value)} /><br />
                                 <label htmlFor="price">Precio del producto:</label>
-                                <input type="number" id="price" value={price} onChange={(e) => setPrice(e.target.value)} /><br /><br />
+                                <input type="number" id="price" value={price} onChange={(e) => setPrice(e.target.value)} />
+                                <div className={styles.selector}>
+                                    <label>Tipo de Producto:</label>
+                                    <select value={type} onChange={e => setType(e.target.value)}>
+                                        <option value="1">Otros</option>
+                                        <option value="2">Bebidas</option>
+                                        <option value="3">Accesorios</option>
+                                        <option value="4">Comida</option>
+                                    </select>
+                                </div>
                                 <button type="button" onClick={() => setShowModal(false)}>Cancelar</button>
                                 <button type="button" onClick={agregarProducto}>Agregar producto</button>
                             </form>
@@ -208,7 +220,7 @@ function Products() {
 
                 </div>
             )}
-             {showEditModal && (
+            {showEditModal && (
                 <div className={styles.modalContainer}>
                     <div className={styles.modal}>
                         <div className={styles.productAdd}>
@@ -219,8 +231,17 @@ function Products() {
                                 <label htmlFor="code">Código del producto:</label>
                                 <input type="text" id="code" value={code} disabled /><br />
                                 <label htmlFor="price">Precio del producto:</label>
-                                <input type="number" id="price" value={price} autoFocus onChange={(e) => setPrice(e.target.value)} /><br /><br />
-                                <button type="button" onClick={() => {setShowEditModal(false); resetFields();}}>Cancelar</button>
+                                <input type="number" id="price" value={price} autoFocus onChange={(e) => setPrice(e.target.value)} />
+                                <div className={styles.selector}>
+                                    <label>Tipo de Producto:</label>
+                                    <select value={type} onChange={e => setType(e.target.value)}>
+                                        <option value="1">Otros</option>
+                                        <option value="2">Bebidas</option>
+                                        <option value="3">Accesorios</option>
+                                        <option value="4">Comida</option>
+                                    </select>
+                                </div>
+                                <button type="button" onClick={() => { setShowEditModal(false); resetFields(); }}>Cancelar</button>
                                 <button type="button" onClick={editProduct}>Editar producto</button>
                             </form>
                         </div>
@@ -240,7 +261,7 @@ function Products() {
                                 <input type="text" id="code" value={code} disabled /><br />
                                 <label htmlFor="price">Unidades</label>
                                 <input type="number" id="price" value={newStock} autoFocus onChange={handleInputChange} /><br /><br />
-                                <button type="button" onClick={() => {setShowStockModal(false); resetFields();}}>Cancelar</button>
+                                <button type="button" onClick={() => { setShowStockModal(false); resetFields(); }}>Cancelar</button>
                                 <button type="button" onClick={stockActualization}>Agregar Stock</button>
                             </form>
                         </div>
