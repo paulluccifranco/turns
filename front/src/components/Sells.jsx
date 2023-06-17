@@ -15,6 +15,7 @@ export function Sells(props) {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [totalPrice, setTotalPrice] = useState(0);
     const inputRef = useRef(null);
+    const [paymentMethod, setPaymentMethod] = useState(1);
 
     useEffect(() => {
         handleProductList();
@@ -74,16 +75,16 @@ export function Sells(props) {
     };
 
     function saveSells() {
-            const turnId = props.turnId;
-            fetch(`${url}/sells/${turnId}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify('')
-            })
-                .then(response => response.json())
-                .then(data => console.log(data))
-                .catch(error => console.error(error))
-                .finally(() => { cleanSell(); getDailySell() });
+        const turnId = props.turnId;
+        fetch(`${url}/sells/${turnId}/${paymentMethod}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify('')
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error(error))
+            .finally(() => { cleanSell(); getDailySell() });
 
     };
 
@@ -161,75 +162,82 @@ export function Sells(props) {
                 <NotificationContainer />
                 <h1>Venta</h1>
                 <div>
-                <form className={styles.form}>
-                    <label >Codigo:</label>
-                    <input autoFocus={shouldFocus} type="text" value={code} ref={inputRef} onKeyDown={handleKeyDown} onChange={(event) => setCode(event.target.value)} />
-                    <label>Nombre:</label>
-                    <input type="text" value={searchValue} onChange={handleSearchChange} />
-                    {
-                        !!optionList.length && (
-                            <div className={styles.optionsContainer}>
-                                {
-                                    optionList.map(option => (
-                                        <div className={styles.optionItem} key={option.id} onClick={() => handleProductSelect(option)}>
-                                            <span>
-                                                {option.description}
-                                            </span>
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                        )
-                    }
+                    <form className={styles.form}>
+                        <label >Codigo:</label>
+                        <input autoFocus={shouldFocus} type="text" value={code} ref={inputRef} onKeyDown={handleKeyDown} onChange={(event) => setCode(event.target.value)} />
+                        <label>Nombre:</label>
+                        <input type="text" value={searchValue} onChange={handleSearchChange} />
+                        {
+                            !!optionList.length && (
+                                <div className={styles.optionsContainer}>
+                                    {
+                                        optionList.map(option => (
+                                            <div className={styles.optionItem} key={option.id} onClick={() => handleProductSelect(option)}>
+                                                <span>
+                                                    {option.description}
+                                                </span>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            )
+                        }
 
-                    <label>Precio:</label>
-                    <input type="text" value={'$' + (selectedProduct !== null ? selectedProduct.price : '')} disabled={true} />
+                        <label>Precio:</label>
+                        <input type="text" value={'$' + (selectedProduct !== null ? selectedProduct.price : '')} disabled={true} />
 
 
-                    <label>Cantidad:</label>
-                    <input type="text" value={units} onChange={handleInputChange} />
-                    <div className='button-container'>
-                        <button type="button" onClick={() => saveDailySell(selectedProduct, units)}>Guardar</button>
-                        <button type="button" onClick={cleanSell}>Borrar</button>
-                    </div>
-                </form>
-                <h1>Cola de Ventas</h1>
-                <div className={styles.sellsList}>                    
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style={{ width: '25%' }}>Description</th>
-                                <th style={{ width: '10%' }}>Unidades</th>
-                                <th style={{ width: '15%' }}>Precio</th>
-                                <th style={{ width: '20%' }}>Total</th>
-                                <th style={{ width: '30%' }}>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>TOTAL:</td>
-                                <td>---</td>
-                                <td>---</td>
-                                <td>${getTotals()}</td>
-                                <td>
-                                    <button type="button" onClick={() => saveSells()}>CERRAR VENTAS</button>
-                                </td>
-                            </tr>
-                            {Array.from(dailySells).map((dailySell) => (
+                        <label>Cantidad:</label>
+                        <input type="text" value={units} onChange={handleInputChange} />
+                        <div className='button-container'>
+                            <button type="button" onClick={() => saveDailySell(selectedProduct, units)}>Guardar</button>
+                            <button type="button" onClick={cleanSell}>Borrar</button>
+                        </div>
+                    </form>
+                    <h1>Cola de Ventas</h1>
+                    <div className={styles.sellsList}>
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td>{dailySell.description}</td>
-                                    <td>{dailySell.units}</td>
-                                    <td>${dailySell.productPrice}</td>
-                                    <td>${dailySell.units * dailySell.productPrice}</td>
+                                    <th style={{ width: '25%' }}>Description</th>
+                                    <th style={{ width: '10%' }}>Unidades</th>
+                                    <th style={{ width: '15%' }}>Precio</th>
+                                    <th style={{ width: '20%' }}>Total</th>
+                                    <th style={{ width: '30%' }}>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>TOTAL:</td>
+                                    <td>---</td>
+                                    <td>---</td>
+                                    <td>${getTotals()}</td>
                                     <td>
-                                        <button type="button" onClick={() => substractUnit(dailySell, -1)}>Restar</button>
-                                        <button type="button" onClick={() => handleDelete(dailySell.id)}>Eliminar</button>
+                                        <button type="button" onClick={() => saveSells()}>CERRAR VENTAS</button>
+                                        <div className={styles.selector}>
+                                            <label>Forma de Pago:</label>
+                                            <select value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)}>
+                                                <option value="1">Efectivo</option>
+                                                <option value="2">Transferencia</option>
+                                            </select>
+                                        </div>
                                     </td>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                                {Array.from(dailySells).map((dailySell) => (
+                                    <tr>
+                                        <td>{dailySell.description}</td>
+                                        <td>{dailySell.units}</td>
+                                        <td>${dailySell.productPrice}</td>
+                                        <td>${dailySell.units * dailySell.productPrice}</td>
+                                        <td>
+                                            <button type="button" onClick={() => substractUnit(dailySell, -1)}>Restar</button>
+                                            <button type="button" onClick={() => handleDelete(dailySell.id)}>Eliminar</button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 

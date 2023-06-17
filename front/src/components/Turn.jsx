@@ -32,6 +32,7 @@ export function Horario(props) {
     const [shouldFocus, setShouldFocus] = useState(false);
     const [turnAmount, setTurnAmount] = useState('');
     const [valuesArray, setValuesArray] = useState([]);
+    const [paymentMethod, setPaymentMethod] = useState('');
 
 
 
@@ -40,6 +41,7 @@ export function Horario(props) {
         setName(props.hora.name);
         setComment(props.hora.comment);
         setStateId(props.hora.stateId);
+        setPaymentMethod(props.hora.paymentMethod);
         props.hora.id === null ? setShouldFocus(true) : setShouldFocus(false);
         setShowModal(true);
         showTurnValues();
@@ -88,7 +90,7 @@ export function Horario(props) {
             const permanentTurnId = props.hora.permanentTurnId;
             const turnValue = turnAmount;
             const shiftId = shift.id;
-            const data = { name, phone, comment, id, field, hour, day, stateId, weekDay, permanentTurnId, turnValue, shiftId };
+            const data = { name, phone, comment, id, field, hour, day, stateId, weekDay, permanentTurnId, turnValue, shiftId, paymentMethod };
             fetch(`${url}/turns`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -185,6 +187,13 @@ export function Horario(props) {
                                                 {valuesArray.map((value, index) => (
                                                     <option value={value}>${value}</option>
                                                 ))}                                                
+                                            </select>
+                                        </div>
+                                        <div className={styles.selector}>
+                                            <label>Forma de Pago:</label>
+                                            <select value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)}>
+                                                <option value="1">Efectivo</option>
+                                                <option value="2">Transferencia</option>
                                             </select>
                                         </div>
                                         <div className='button-container'>

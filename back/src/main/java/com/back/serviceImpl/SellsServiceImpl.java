@@ -32,15 +32,15 @@ public class SellsServiceImpl implements SellsService {
     }
 
     @Override
-    public void saveTurnSells(Long turnId) {
+    public void saveTurnSells(Long turnId, Integer paymentMethodId) {
         List<DailySell> dailySellList = dailySellService.getDailySellListByTurnId(turnId);
         Shift shift = shiftService.getLast();
         Date closeDate = new Date();
         dailySellList.forEach(dSell -> {
             Product product = productService.getProduct(dSell.getProductId());
-            Sells sells = new Sells(dSell.getProductId(), dSell.getDescription(), dSell.getUnits(), dSell.getProductPrice(), closeDate, shift.getId(), dSell.getTurnId(), product.getType());
+            Sells sells = new Sells(dSell.getProductId(), dSell.getDescription(), dSell.getUnits(), dSell.getProductPrice(), closeDate, shift.getId(), dSell.getTurnId(), product.getType(), paymentMethodId);
             sellsRepository.save(sells);
-            dailySellService.deleteDailySell(dSell.getId());
+            dailySellService.deleteDailySellForClose(dSell.getId());
         });
 
     }

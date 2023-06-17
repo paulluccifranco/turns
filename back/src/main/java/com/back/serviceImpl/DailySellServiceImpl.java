@@ -60,4 +60,9 @@ public class DailySellServiceImpl implements DailySellService {
         productService.saveProduct(product);
         dailySellRepository.deleteById(id);
     }
+
+    @Override
+    public void deleteDailySellForClose(Long id) {
+        dailySellRepository.deleteById(id);
+    }
 }

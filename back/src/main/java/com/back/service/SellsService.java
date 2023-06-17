@@ -8,7 +8,7 @@ import java.util.List;
 public interface SellsService {
 
     public List<Sells> getSells();
-    public void saveTurnSells (Long turnId);
+    public void saveTurnSells (Long turnId, Integer paymentMethodId);
     public List<Sells> getSellsBetweenDates(Date from, Date to);
     public List<Sells> getSellsByShiftId(Long shiftId);
 }

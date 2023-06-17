@@ -26,9 +26,9 @@ public class SellsController {
         return sellsService.getSells();
     }
 
-    @PostMapping("/{turnId}")
-    public void saveSells(@PathVariable Long turnId) {
-        sellsService.saveTurnSells(turnId);
+    @PostMapping("/{turnId}/{paymentMethodId}")
+    public void saveSells(@PathVariable Long turnId, @PathVariable Integer paymentMethodId) {
+        sellsService.saveTurnSells(turnId, paymentMethodId);
     }
 
 }

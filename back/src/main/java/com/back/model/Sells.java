@@ -44,8 +44,10 @@ public class Sells implements Serializable {
     private Long shiftId;
     @Column(name = "TYPE")
     private Integer type = 1;
+    @Column(name = "PAYMENT_METHOD")
+    private Integer paymentMethod = 1;
 
-    public Sells(Long productId, String description, Integer units, BigDecimal productPrice, Date date, Long shiftId, Long turnId, Integer type) {
+    public Sells(Long productId, String description, Integer units, BigDecimal productPrice, Date date, Long shiftId, Long turnId, Integer type, Integer paymentMethodId) {
         this.productId = productId;
         this.description = description;
         this.units = units;
@@ -54,5 +56,6 @@ public class Sells implements Serializable {
         this.shiftId = shiftId;
         this.turnId = turnId;
         this.type = type;
+        this.paymentMethod = paymentMethodId;
     }
 }

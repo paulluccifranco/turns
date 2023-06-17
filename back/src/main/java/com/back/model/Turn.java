@@ -53,6 +53,8 @@ public class Turn implements Serializable {
     private BigDecimal turnValue;
     @Column(name = "SHIFT_ID")
     private Long shiftId;
+    @Column(name = "PAYMENT_METHOD")
+    private Integer paymentMethod = 1;
 
     public Turn(int hour, int field, Date date, int weekDay) {
         this.hour = hour;

@@ -123,6 +123,7 @@
 
 .selector {
     display: inline;
+    margin-left: 50px;
     width: 600px;
     height: 30px;
 }

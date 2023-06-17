@@ -11,4 +11,5 @@ public interface DailySellService {
     public DailySell getDailySell(Long id);
     public void saveDailySell(DailySell dailySell);
     public void deleteDailySell(Long id);
+    public void deleteDailySellForClose(Long id);
 }

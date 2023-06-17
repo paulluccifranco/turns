@@ -1,5 +1,6 @@
 package com.back.serviceImpl;
 
+import com.back.enums.PaymentMethodEnum;
 import com.back.enums.ProductTypeEnum;
 import com.back.model.Movement;
 import com.back.model.Sells;
@@ -33,7 +34,6 @@ public class SummaryServiceImpl implements SummaryService {
     private static final Integer PAYED_TURN_STATUS_ID = 5;
     @Override
     public String getNormalResume(Long shiftId) {
-        BigDecimal totalAmount = BigDecimal.ZERO;
         Integer payedTurns = 0;
         Integer wantingTurns = 0;
         HashMap<BigDecimal, Integer> turnHashMap = new HashMap<>();
@@ -43,6 +43,8 @@ public class SummaryServiceImpl implements SummaryService {
         List<Turn> turnList = turnService.getTurnsByShiftId(shiftId);
         List<Sells> sellsList = sellsService.getSellsByShiftId(shiftId);
         List<Movement> movementList = movementService.getMovementsByShift(shiftId);
+        HashMap<Integer, BigDecimal> totalAmounts = new HashMap<>();
+        BigDecimal totalAmount = BigDecimal.ZERO;
 
         for(Turn turn: turnList) {
             if(turn.getStateId() == WANTING_TURN_STATUS_ID) wantingTurns = wantingTurns + 1;
@@ -54,18 +56,24 @@ public class SummaryServiceImpl implements SummaryService {
                 }
                 Integer oldValue = turnHashMap.get(turnValue);
                 turnHashMap.put(turnValue, oldValue + 1);
+                if (!totalAmounts.containsKey(turn.getPaymentMethod())) {
+                    totalAmounts.put(turn.getPaymentMethod(), turnValue);
+                }else {
+                    BigDecimal value = totalAmounts.get(turn.getPaymentMethod());
+                    totalAmounts.put(turn.getPaymentMethod(), value.add(turnValue));
+                }
                 totalAmount = totalAmount.add(turnValue);
             }
         }
 
         StringBuilder messagge = new StringBuilder();
-        messagge.append("Turno ");
+        /*messagge.append("Turno ");
         messagge.append(shift.getShiftEnum().name());
         messagge.append("\n");
         messagge.append("A cargo de ");
         messagge.append(shift.getEmployee());
         messagge.append("\n");
-        messagge.append("\n");
+        messagge.append("\n");*/
         messagge.append(payedTurns + " Turnos: $");
         messagge.append(totalAmount);
         messagge.append("\n");
@@ -78,7 +86,12 @@ public class SummaryServiceImpl implements SummaryService {
             messagge.append("   " + "$" + value + "(" + units + "): $" + total);
             messagge.append("\n");
         }
+        for (Map.Entry<Integer, BigDecimal> entry : totalAmounts.entrySet()) {
+            messagge.append("*Total " + PaymentMethodEnum.getDescriptionById(entry.getKey()) + " cancha: $" + entry.getValue());
+            messagge.append("\n");
+        }
         totalAmount = BigDecimal.ZERO;
+        totalAmounts = new HashMap<>();
         for(Sells sell : sellsList) {
             if(!sellsHashMap.containsKey(sell.getDescription())){
                 sellsHashMap.put(sell.getDescription(), sell);
@@ -86,6 +99,12 @@ public class SummaryServiceImpl implements SummaryService {
                 Sells auxSell = sellsHashMap.get(sell.getDescription());
                 auxSell.setUnits(auxSell.getUnits() + sell.getUnits());
                 sellsHashMap.put(sell.getDescription(), auxSell);
+            }
+            if(!totalAmounts.containsKey(sell.getPaymentMethod())){
+                totalAmounts.put(sell.getPaymentMethod(), sell.getProductPrice().multiply(new BigDecimal(sell.getUnits())));
+            }else {
+                BigDecimal value = totalAmounts.get(sell.getPaymentMethod());
+                totalAmounts.put(sell.getPaymentMethod(), value.add(sell.getProductPrice().multiply(new BigDecimal(sell.getUnits()))));
             }
             BigDecimal total = sell.getProductPrice().multiply(new BigDecimal(sell.getUnits()));
             totalAmount = totalAmount.add(total);
@@ -116,6 +135,11 @@ public class SummaryServiceImpl implements SummaryService {
                 messagge.append("     " + sell.getDescription() + "(" + sell.getUnits() + "): $" + total);
                 messagge.append("\n");
             }
+        }
+        messagge.append("\n");
+        for (Map.Entry<Integer, BigDecimal> entry : totalAmounts.entrySet()) {
+            messagge.append("*Abonado por " + PaymentMethodEnum.getDescriptionById(entry.getKey()) + ": $" + entry.getValue());
+            messagge.append("\n");
         }
 
         messagge.append("\n");
