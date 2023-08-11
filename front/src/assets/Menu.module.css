@@ -1,3 +1,4 @@
+@import 'Definitions.css';
 .menuContainer {
     position: fixed;
     top: 0;
@@ -66,11 +67,12 @@
 .shiftInfo {
     position: fixed;
     text-align: center;
-    border-radius: 15px;
     width: 350px;
     margin-left: 1500px;
     margin-top: -67px;
     background-color: bisque;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+    border-radius: 10px;
 }
 
 .shiftInfo:hover {
@@ -82,9 +84,11 @@
     padding: 10px;
     width: 250px;
     border-radius: 15px;
-    background-color: aquamarine;
+    background-color: var(--color-buttons);
     margin-left: 1000px;
     font-size: 15pt;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+    border-radius: 10px;
 }
 
 .movementButton {
@@ -92,9 +96,11 @@
     padding: 10px;
     width: 250px;
     border-radius: 15px;
-    background-color: aquamarine;
+    background-color: #c0cf14;
     margin-left: 730px;
     font-size: 15pt;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+    border-radius: 10px;
 }
 
 .openShiftButton {
