@@ -4,7 +4,7 @@ import 'rsuite/dist/rsuite.min.css';
 import Menu from './components/Menu';
 import LeftPanel from './components/LeftPanel';
 import ShiftContext from './contexts/ShiftContext';
-import { url } from './helpers/api';
+import { url } from './services/api';
 
 
 

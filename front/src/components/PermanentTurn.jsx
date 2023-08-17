@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { url } from '../helpers/api';
+import { url } from '../services/api';
 import styles from '../assets/PermanentTurn.module.css';
 import { CurrentAccount } from './CurrentAccount';
 

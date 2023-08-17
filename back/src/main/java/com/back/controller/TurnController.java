@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.websocket.server.PathParam;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,16 +31,15 @@ public class TurnController {
     private PermanentTurnService permanentTurnService;
 
     @GetMapping("/{date}")
-    public List<Turn> getTurns(@PathVariable("date") String dayUnformated) {
-        System.out.println(dayUnformated);
+    public List<Turn> getTurns(@PathVariable("date") Date dayUnformated) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd yyyy");
-        Date day = null;
-        try {
+        Date day = dayUnformated;
+/*        try {
             String date = dayUnformated.substring(4, 15);
             day = simpleDateFormat.parse(date);
         } catch (Exception e) {
             System.out.println(e);
-        }
+        }*/
         Calendar cal = Calendar.getInstance();
         cal.setTime(day);
         int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);

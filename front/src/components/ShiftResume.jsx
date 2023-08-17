@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { url } from '../helpers/api';
+import { url } from '../services/api';
 
 export function ShiftResume (props) {
     let porJugar = 0;

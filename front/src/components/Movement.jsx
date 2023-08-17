@@ -1,6 +1,6 @@
 import ShiftContext from '../contexts/ShiftContext';
 import React, { useEffect, useState, useContext } from 'react'
-import { url } from '../helpers/api';
+import { url } from '../services/api';
 import styles from '../assets/Movements.module.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';

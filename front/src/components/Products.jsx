@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { url } from '../helpers/api';
+import { url } from '../services/api';
 import styles from '../assets/Product.module.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';

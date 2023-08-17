@@ -7,5 +7,5 @@ import java.util.Date;
 
 public interface ReservationTurnRepository extends JpaRepository<ReservationTurn, Long> {
 
-    public ReservationTurn findByFieldAndHourAndDay(Long field, Long hour, Date day);
+    public ReservationTurn findReservationTurnByFieldAndHourAndDay(int field, int hour, int day);
 }

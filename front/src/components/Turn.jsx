@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { url } from '../helpers/api';
+import { url } from '../services/api';
 import styles from '../assets/Horario.module.css';
 import { Sells } from './Sells';
 import { CurrentAccount } from './CurrentAccount';

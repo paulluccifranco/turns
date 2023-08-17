@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import styles from '../assets/GeneralParameters.module.css';
-import { url } from '../helpers/api';
+import { url } from '../services/api';
 
 export default function GeneralParameters() {
     const [showResume, setShowResume] = useState(false);

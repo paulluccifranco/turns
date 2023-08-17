@@ -4,7 +4,7 @@ import { CustomProvider, SelectPicker } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import HourList from './HourList';
 import ListadoCanchaFijo from './PermanentTurnList';
-import {url} from '../helpers/api';
+import {url} from '../services/api';
 import es_AR from 'rsuite/locales/es_AR';
 import styles from '../assets/Horario.module.css';
 

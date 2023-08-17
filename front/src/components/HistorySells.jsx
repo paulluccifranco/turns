@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { url } from '../helpers/api';
+import { url } from '../services/api';
 import styles from '../assets/HistorySells.module.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 

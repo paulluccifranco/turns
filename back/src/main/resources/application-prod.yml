@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:mysql://mysql-db:3306/turns
+    username: root
+    password: turnos
