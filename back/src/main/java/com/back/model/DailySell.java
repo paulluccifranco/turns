@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name="DAILY_SELL")
+@Table(name="daily_sell")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,16 +21,16 @@ public class DailySell implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
-    @Column(name = "TURN_ID")
+    @Column(name = "turn_id")
     private Long turnId;
-    @Column(name = "PRODUCT_ID")
+    @Column(name = "product_id")
     private Long productId;
-    @Column(name = "PRODUCT_DESCRIPTION")
+    @Column(name = "product_description")
     private String description;
-    @Column(name = "UNITS")
+    @Column(name = "units")
     private Integer units;
-    @Column(name = "PRODUCT_PRICE")
+    @Column(name = "product_price")
     private BigDecimal productPrice;
 }

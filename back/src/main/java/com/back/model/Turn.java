@@ -21,38 +21,41 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="TURN", uniqueConstraints =
-        {  @UniqueConstraint(name = "UniqueTurn", columnNames = { "DAY", "HOUR", "FIELD" })})
+@Table(name="turn", uniqueConstraints =
+        {  @UniqueConstraint(name = "UniqueTurn", columnNames = { "day", "hour", "field" })})
 public class Turn implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
-    @Column(name = "DAY")
+    // "day" es palabra reservada en H2
+    @Column(name = "\"day\"")
     @Temporal(TemporalType.DATE)
     private Date day;
-    @Column(name = "WEEK_DAY")
+    @Column(name = "week_day")
     private int weekDay;
-    @Column(name = "HOUR")
+    // "hour" es palabra reservada en H2
+    @Column(name = "\"hour\"")
     private int hour;
-    @Column(name = "FIELD")
+    // "field" es palabra reservada en H2
+    @Column(name = "\"field\"")
     private int field;
-    @Column(name = "NAME")
+    @Column(name = "name")
     private String name;
-    @Column(name = "PHONE")
+    @Column(name = "phone")
     private String phone;
-    @Column(name = "COMMENT")
+    @Column(name = "comment")
     private String comment;
-    @Column(name = "STATE_ID")
+    @Column(name = "state_id")
     private int stateId;
-    @Column(name = "PERMANENT_TURN_ID")
+    @Column(name = "permanent_turn_id")
     private Long permanentTurnId;
-    @Column(name = "TURN_VALUE")
+    @Column(name = "turn_value")
     private BigDecimal turnValue;
-    @Column(name = "SHIFT_ID")
+    @Column(name = "shift_id")
     private Long shiftId;
-    @Column(name = "PAYMENT_METHOD")
+    @Column(name = "payment_method")
     private Integer paymentMethod = 1;
 
     public Turn(int hour, int field, Date date, int weekDay) {

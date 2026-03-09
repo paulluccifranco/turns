@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk13:x86_64-alpine-jre-13.0.2_8
+FROM eclipse-temurin:17-jre-alpine
 ADD target/Turns.jar Turns.jar
 ENV JAVA_OPTS=""
 ENV OPTS=""

@@ -19,22 +19,22 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name="PRODUCT", uniqueConstraints =
-        {  @UniqueConstraint(name = "ProductCode", columnNames = { "CODE" })})
+@Table(name="product", uniqueConstraints =
+        {  @UniqueConstraint(name = "ProductCode", columnNames = { "code" })})
 public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
-    @Column(name = "DESCRIPTION", length = 40)
+    @Column(name = "description", length = 40)
     private String description;
-    @Column(name = "CODE", length = 30)
+    @Column(name = "code", length = 30)
     private String code;
-    @Column(name = "PRICE")
+    @Column(name = "price")
     private BigDecimal price;
-    @Column(name = "STOCK")
+    @Column(name = "stock")
     private Integer stock;
-    @Column(name = "TYPE")
+    @Column(name = "type")
     private Integer type = 1;
 }

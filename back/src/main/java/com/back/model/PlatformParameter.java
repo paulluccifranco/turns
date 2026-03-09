@@ -17,18 +17,19 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name="PLATFORM_PARAMETER", uniqueConstraints =
-        {  @UniqueConstraint(name = "ParameterKey", columnNames = { "PARAM_KEY"})})
+@Table(name="platform_parameter", uniqueConstraints =
+        {  @UniqueConstraint(name = "ParameterKey", columnNames = { "param_key"})})
 public class PlatformParameter implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
-    @Column(name = "PARAM_KEY", length = 30)
+    @Column(name = "param_key", length = 30)
     private String key;
-    @Column(name = "DESCRIPTION")
+    @Column(name = "description")
     private String description;
-    @Column(name = "VALUE")
+    // "value" es palabra reservada en H2
+    @Column(name = "\"value\"")
     private String value;
 }

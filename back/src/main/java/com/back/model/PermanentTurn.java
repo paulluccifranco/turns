@@ -14,24 +14,27 @@ import java.io.Serializable;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name="PERMANENT_TURN")
+@Table(name="permanent_turn")
 public class PermanentTurn implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
-    @Column(name = "DAY")
+    // "day" es palabra reservada en H2, se mapea explícitamente entre comillas
+    @Column(name = "\"day\"")
     private int day;
-    @Column(name = "HOUR")
+    // "hour" es palabra reservada en H2, se mapea explícitamente entre comillas
+    @Column(name = "\"hour\"")
     private int hour;
-    @Column(name = "FIELD")
+    // "field" es palabra reservada en H2, se mapea explícitamente entre comillas
+    @Column(name = "\"field\"")
     private int field;
-    @Column(name = "NAME")
+    @Column(name = "name")
     private String name;
-    @Column(name = "PHONE")
+    @Column(name = "phone")
     private String phone;
-    @Column(name = "COMMENT")
+    @Column(name = "comment")
     private String comment;
 
     public PermanentTurn(int day, int field, int hour) {

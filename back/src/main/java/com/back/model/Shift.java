@@ -24,20 +24,22 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="SHIFT", uniqueConstraints =
-        {  @UniqueConstraint(name = "UniqueTurn", columnNames = { "DAY", "SHIFT" })})
+@Table(name="shift", uniqueConstraints =
+        {  @UniqueConstraint(name = "UniqueTurn", columnNames = { "day", "shift" })})
 public class Shift implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
-    @Column(name = "DAY")
+    // "day" es palabra reservada en H2
+    @Column(name = "\"day\"")
     @Temporal(TemporalType.DATE)
     private Date date;
-    @Column(name = "SHIFT", length = 15)
+    // "shift" es palabra reservada en H2
+    @Column(name = "\"shift\"", length = 15)
     @Enumerated(EnumType.STRING)
     private ShiftEnum shiftEnum;
-    @Column(name = "EMPLOYEE", length = 40)
+    @Column(name = "employee", length = 40)
     private String employee;
 }

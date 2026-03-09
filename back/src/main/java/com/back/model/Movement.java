@@ -18,20 +18,20 @@ import java.util.Date;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name="MOVEMENTS")
+@Table(name="movements")
 public class Movement implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
-    @Column(name = "DESCRIPTION")
+    @Column(name = "description")
     private String description;
-    @Column(name = "AMOUNT")
+    @Column(name = "amount")
     private BigDecimal amount;
-    @Column(name = "SHIFT_ID")
+    @Column(name = "shift_id")
     private Long shiftId;
-    @Column(name = "DATE")
+    @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 }

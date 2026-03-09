@@ -14,24 +14,27 @@ import java.io.Serializable;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name="RESERVATION_TURN")
+@Table(name="reservation_turn")
 public class ReservationTurn implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
-    @Column(name = "DAY")
+    // "day" es palabra reservada en H2
+    @Column(name = "\"day\"")
     private int day;
-    @Column(name = "HOUR")
+    // "hour" es palabra reservada en H2
+    @Column(name = "\"hour\"")
     private int hour;
-    @Column(name = "FIELD")
+    // "field" es palabra reservada en H2
+    @Column(name = "\"field\"")
     private int field;
-    @Column(name = "NAME")
+    @Column(name = "name")
     private String name;
-    @Column(name = "PHONE")
+    @Column(name = "phone")
     private String phone;
-    @Column(name = "COMMENT")
+    @Column(name = "comment")
     private String comment;
 
     public ReservationTurn(int day, int field, int hour) {

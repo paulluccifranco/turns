@@ -17,17 +17,18 @@ import java.util.Date;
 @Data
 @Entity
 @NoArgsConstructor
-@Table(name="DELETED_TURN", uniqueConstraints =
-        {  @UniqueConstraint(name = "DeletedTurn", columnNames = { "DAY", "PERMANENT_TURN_ID"})})
+@Table(name="deleted_turn", uniqueConstraints =
+        {  @UniqueConstraint(name = "DeletedTurn", columnNames = { "day", "permanent_turn_id"})})
 public class DeletedTurn {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Long id;
-    @Column(name = "DAY")
+    // "day" es palabra reservada en H2
+    @Column(name = "\"day\"")
     @Temporal(TemporalType.DATE)
     private Date day;
-    @Column(name = "PERMANENT_TURN_ID")
+    @Column(name = "permanent_turn_id")
     private Long permanentTurnId;
 
     public DeletedTurn(Date day, Long permanentTurnId) {

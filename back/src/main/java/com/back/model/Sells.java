@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
-@Table(name="SELLS")
+@Table(name="sells")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,26 +25,26 @@ public class Sells implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ID")
+    @Column(name="id")
     private Long id;
-    @Column(name="PRODUCT_ID")
+    @Column(name="product_id")
     private Long productId;
-    @Column(name = "TURN_ID")
+    @Column(name = "turn_id")
     private Long turnId;
-    @Column(name="DESCRIPTION")
+    @Column(name="description")
     private String description;
-    @Column(name = "PRODUCT_DESCRIPTION")
+    @Column(name = "units")
     private Integer units;
-    @Column(name = "PRODUCT_PRICE")
+    @Column(name = "product_price")
     private BigDecimal productPrice;
-    @Column(name = "DATE")
+    @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
-    @Column(name = "SHIFT")
+    @Column(name = "shift")
     private Long shiftId;
-    @Column(name = "TYPE")
+    @Column(name = "type")
     private Integer type = 1;
-    @Column(name = "PAYMENT_METHOD")
+    @Column(name = "payment_method")
     private Integer paymentMethod = 1;
 
     public Sells(Long productId, String description, Integer units, BigDecimal productPrice, Date date, Long shiftId, Long turnId, Integer type, Integer paymentMethodId) {

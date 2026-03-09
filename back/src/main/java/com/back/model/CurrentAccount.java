@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
-@Table(name="CURRENT_ACCOUNT")
+@Table(name="current_account")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,19 +25,19 @@ public class CurrentAccount implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ID")
+    @Column(name="id")
     private Long Id;
-    @Column(name="PERMANENT_TURN_ID")
+    @Column(name="permanent_turn_id")
     private Long permanentTurnId;
-    @Column(name="TURN_ID")
+    @Column(name="turn_id")
     private Long turnId;
-    @Column(name="DESCRIPTION")
+    @Column(name="description")
     private String description;
-    @Column(name="AMOUNT")
+    @Column(name="amount")
     private BigDecimal amount;
-    @Column(name = "SHIFT_ID")
+    @Column(name = "shift_id")
     private Long shiftId;
-    @Column(name = "DATE")
+    @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 }
