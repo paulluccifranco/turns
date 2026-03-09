@@ -1,5 +1,5 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/TURNS?allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/turns
     username: root
-    password: local
+    password: turnos
