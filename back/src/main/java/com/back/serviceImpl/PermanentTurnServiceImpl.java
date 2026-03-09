@@ -56,6 +56,11 @@ public class PermanentTurnServiceImpl implements PermanentTurnService {
 
     @Override
     public void saveDeletedTurn(Date day, Long permanentTurnId) {
+        // Evitar violar la unique constraint ("day", permanent_turn_id)
+        DeletedTurn existing = deletedTurnRepository.findByDayAndPermanentTurnId(day, permanentTurnId);
+        if (existing != null) {
+            return; // ya existe, no insertamos de nuevo
+        }
         DeletedTurn deletedTurn = new DeletedTurn(day, permanentTurnId);
         deletedTurnRepository.save(deletedTurn);
     }
