@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { url } from '../services/api';
+import { apiPost, apiDelete, apiGet } from '../services/api';
 import styles from '../assets/Horario.module.css';
 import { Sells } from './Sells';
 import { CurrentAccount } from './CurrentAccount';
@@ -91,11 +91,8 @@ export function Horario(props) {
             const turnValue = turnAmount;
             const shiftId = shift.id;
             const data = { name, phone, comment, id, field, hour, day, stateId, weekDay, permanentTurnId, turnValue, shiftId, paymentMethod };
-            fetch(`${url}/turns`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
+            const token = localStorage.getItem('token');
+            apiPost(`/turns`, data, token)
                 .then(response => response.json())
                 .then(data => console.log(data))
                 .catch(error => console.error(error)).finally(() => props.handleCalendarClick(day));
@@ -107,9 +104,8 @@ export function Horario(props) {
     const handleDelete = (event) => {
         event.preventDefault();
         const day = new Date(props.hora.day.substring(0, 10) + "T00:00:00-03:00");
-        fetch(`${url}/turns/${props.hora.id}`, {
-            method: 'DELETE'
-        })
+        const token = localStorage.getItem('token');
+        apiDelete(`/turns/${props.hora.id}`, token)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error al eliminar el turno');
@@ -130,7 +126,8 @@ export function Horario(props) {
 
     function showTurnValues() {
         const key = "TURN_VALUES";
-        fetch(`${url}/platform-parameter/${key}`)
+        const token = localStorage.getItem('token');
+        apiGet(`/platform-parameter/${key}`, token)
             .then(response => response.json())
             .then(data => {
                 setValuesArray(data.value.split(','));

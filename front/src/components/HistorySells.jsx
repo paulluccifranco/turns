@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { url } from '../services/api';
+import React, { useEffect, useState } from 'react'
+import { apiGet } from '../services/api';
 import styles from '../assets/HistorySells.module.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 
@@ -13,7 +13,8 @@ function HistorySells() {
 
 
     const loadSells = () => {
-        fetch(`${url}/sells`)
+        const token = localStorage.getItem('token');
+        apiGet(`/sells`, token)
             .then(response => response.json())
             .then(data => setSells(data))
             .catch(error => console.log(error));

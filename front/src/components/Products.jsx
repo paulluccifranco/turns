@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { url } from '../services/api';
+import { apiGet, apiPost, apiDelete } from '../services/api';
 import styles from '../assets/Product.module.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
@@ -25,7 +25,8 @@ function Products() {
 
 
     const handleProductList = () => {
-        fetch(`${url}/product`)
+        const token = localStorage.getItem('token');
+        apiGet(`/product`, token)
             .then(response => response.json())
             .then(data => setData(data))
             .catch(error => console.log(error));
@@ -52,11 +53,8 @@ function Products() {
         }
         const stock = 0;
         const data = { description, code, price, stock, type };
-        fetch(`${url}/product`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
+        const token = localStorage.getItem('token');
+        apiPost(`/product`, data, token)
             .then(response => {
                 if (response.status === 409) {
                     NotificationManager.error('El Codigo ya Existe', 'Error al Agregar Producto', 2000);
@@ -73,11 +71,8 @@ function Products() {
         event.preventDefault();
         const stock = editStock;
         const data = { id, description, code, price, stock, type };
-        fetch(`${url}/product`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
+        const token = localStorage.getItem('token');
+        apiPost(`/product`, data, token)
             .then(response => {
                 if (response.status === 409) {
                     NotificationManager.error('El Codigo ya Existe', 'Error al Agregar Producto', 2000);
@@ -94,11 +89,8 @@ function Products() {
         event.preventDefault();
         const stock = Number(editStock) + Number(newStock);
         const data = { id, description, code, price, stock };
-        fetch(`${url}/product`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
+        const token = localStorage.getItem('token');
+        apiPost(`/product`, data, token)
             .then(response => {
                 if (response.status === 409) {
                     NotificationManager.error('El Codigo ya Existe', 'Error al Agregar Producto', 2000);
@@ -114,10 +106,8 @@ function Products() {
     };
 
     function eliminarProducto(id) {
-        fetch(`${url}/product/${id}`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' }
-        })
+        const token = localStorage.getItem('token');
+        apiDelete(`/product/${id}`, token)
             .then(response => response.json())
             .catch(error => console.error(error)).finally(() => { handleProductList(); resetFields() });
     }

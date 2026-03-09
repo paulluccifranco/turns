@@ -1,5 +1,0 @@
-FROM eclipse-temurin:17.0.8_7-jre-jammy
-ADD target/Turns.jar Turns.jar
-ENV JAVA_OPTS=""
-ENV OPTS=""
-ENTRYPOINT java $JAVA_OPTS -jar Turns.jar $OPTS

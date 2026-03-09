@@ -1,6 +1,6 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
 import styles from '../assets/GeneralParameters.module.css';
-import { url } from '../services/api';
+import { apiGet, apiPost } from '../services/api';
 
 export default function GeneralParameters() {
     const [showResume, setShowResume] = useState(false);
@@ -12,7 +12,8 @@ export default function GeneralParameters() {
 
     function showTurnValues() {
         const key = "TURN_VALUES";
-        fetch(`${url}/platform-parameter/${key}`)
+        const token = localStorage.getItem('token');
+        apiGet(`/platform-parameter/${key}`, token)
             .then(response => response.json())
             .then(data => {
                 setTurnValues(data.value);
@@ -46,11 +47,8 @@ export default function GeneralParameters() {
     const saveParameter = (key, value) => {
         const id = parameter !== null ? parameter.id : null;
         const data = { id, key, value };
-        fetch(`${url}/platform-parameter`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
+        const token = localStorage.getItem('token');
+        apiPost(`/platform-parameter`, data, token)
             .then(response => response.json())
             .catch(error => console.log(error));
     };

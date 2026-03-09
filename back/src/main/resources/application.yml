@@ -1,8 +1,9 @@
 spring:
-  profiles:
-    default: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://mysql-db:3306/turns
+    username: root
+    password: cGF5cm9vbXM=
 
   jpa:
     hibernate:
@@ -10,7 +11,7 @@ spring:
     show-sql: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
         physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
   servlet:

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import style from '../assets/Menu.module.css';
 import logo from '../images/Logo.png';
-import { url } from '../services/api';
+import { apiGet, apiPost, apiDelete } from '../services/api';
 import ShiftContext from '../contexts/ShiftContext';
 import { Sells } from './Sells';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
@@ -21,7 +21,8 @@ function Menu() {
 
   function getResumeMessage() {
     const shiftId = shift.id;
-    fetch(`${url}/summary/${shiftId}`)
+    const token = localStorage.getItem('token');
+    apiGet(`/summary/${shiftId}`, token)
         .then(response => response.text())
         .then(data => setMessagge(data))
         .catch(error => console.log(error))
@@ -37,11 +38,8 @@ function Menu() {
     const shiftId = shift.id;
     const data = { shiftId, employeeName, shiftDescription };
     console.log(shiftDescription);
-    fetch(`${url}/shift/open`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
+    const token = localStorage.getItem('token');
+    apiPost(`/shift/open`, data, token)
       .then(response => {
         if (response.status === 409) {
           console.log("Gholasas");
@@ -57,10 +55,8 @@ function Menu() {
   function closeShift(event) {
     event.preventDefault();
     const shiftId = shift.id;
-    fetch(`${url}/shift/${shiftId}/close`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
-    })
+    const token = localStorage.getItem('token');
+    apiPost(`/shift/${shiftId}/close`, {}, token)
       .then(response => response.json())
       .catch(error => console.log(error));
     window.location.reload();
@@ -68,9 +64,8 @@ function Menu() {
 
   const openLast = (event) => {
     event.preventDefault();
-    fetch(`${url}/shift/open-last`, {
-        method: 'DELETE'
-    })
+    const token = localStorage.getItem('token');
+    apiDelete(`/shift/open-last`, token)
         .then(response => {
             console.log('El turno ha sido eliminado correctamente');
         })

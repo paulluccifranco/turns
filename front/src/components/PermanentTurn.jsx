@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { url } from '../services/api';
+import { apiPost, apiDelete } from '../services/api';
 import styles from '../assets/PermanentTurn.module.css';
 import { CurrentAccount } from './CurrentAccount';
 
@@ -56,11 +56,8 @@ export function PermanentTurn(props) {
             const hour = props.hora.hour;
             const day = props.hora.day;
             const data = { name, phone, comment, id, field, hour, day };
-            fetch(`${url}/permanent-turns`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
+            const token = localStorage.getItem('token');
+            apiPost(`/permanent-turns`, data, token)
                 .then(response => response.json())
                 .then(data => { if (id === null) setSuperposedTurns(data) })
                 .catch(error => console.error(error)).finally(() => props.handleCalendarClick(props.hora.day));
@@ -70,9 +67,8 @@ export function PermanentTurn(props) {
 
     const handleDelete = (event) => {
         event.preventDefault();
-        fetch(`${url}/permanent-turns/${props.hora.id}`, {
-            method: 'DELETE'
-        })
+        const token = localStorage.getItem('token');
+        apiDelete(`/permanent-turns/${props.hora.id}`, token)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error al eliminar el turno');

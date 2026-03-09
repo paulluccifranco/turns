@@ -1,0 +1,28 @@
+version: '3'
+services:
+  back:
+    image: dregistry.nodev.com.ar/turnos-backend:1.0.0
+    container_name: turnos-backend
+    restart: always
+    ports:
+      - "8082:8080"
+    depends_on:
+      - mysql-db
+    networks:
+      - payrooms_network
+  front:
+    image: dregistry.nodev.com.ar/turnos-frontend:1.0.0
+    container_name: turnos-frontend
+    restart: always
+    ports:
+      - 3001:80
+    expose:
+      - 80
+    depends_on:
+      - back
+    networks:
+      - payrooms_network
+
+networks:
+  payrooms_network:
+    external: true

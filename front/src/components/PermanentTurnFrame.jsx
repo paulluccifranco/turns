@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import '../assets/styles.css';
 import { CustomProvider, SelectPicker } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import HourList from './HourList';
 import ListadoCanchaFijo from './PermanentTurnList';
-import {url} from '../services/api';
+import { apiGet } from '../services/api';
 import es_AR from 'rsuite/locales/es_AR';
 import styles from '../assets/Horario.module.css';
 
@@ -14,7 +14,8 @@ function ListadoFijos() {
   const [data, setData] = useState([]);
 
   const handleCalendarClick = (date) => {
-    fetch(`${url}/permanent-turns/${date}`)
+    const token = localStorage.getItem('token');
+    apiGet(`/permanent-turns/${date}`, token)
       .then(response => response.json())
       .then(data => setData(data))
       .catch(error => console.log(error));

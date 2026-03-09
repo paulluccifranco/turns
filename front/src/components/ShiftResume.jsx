@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { url } from '../services/api';
+import React, { useState } from 'react';
+import { apiGet } from '../services/api';
 
 export function ShiftResume (props) {
     let porJugar = 0;
@@ -9,14 +9,15 @@ export function ShiftResume (props) {
     let pago = 0;
 
     const [data, setData] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
     const handleCalendarClick = (date) => {
-        fetch(`${url}/turns/${selectedDate}`)
+        const token = localStorage.getItem('token');
+        apiGet(`/turns/${selectedDate}`, token)
           .then(response => response.json())
           .then(data => setData(data))
           .catch(error => console.log(error));
-          setSelectedDate(date);
+        setSelectedDate(date);
       }
 
 

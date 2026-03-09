@@ -4,7 +4,7 @@ import { CustomProvider, DatePicker } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import HourList from './HourList';
 import TurnList from './TurnList';
-import {url} from '../services/api';
+import { apiGet } from '../services/api';
 import es_AR from 'rsuite/locales/es_AR';
 import styles from '../assets/Horario.module.css';
 
@@ -20,11 +20,12 @@ function ListadoTurnos() {
 
 
   const handleCalendarClick = (date) => {
-    fetch(`${url}/turns/${date}`)
+    const token = localStorage.getItem('token');
+    apiGet(`/turns/${date}`, token)
       .then(response => response.json())
       .then(data => setData(data))
       .catch(error => console.log(error));
-      setSelectedDate(date);
+    setSelectedDate(date);
   }
 
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { url } from '../services/api';
+import { apiGet, apiPost, apiDelete } from '../services/api';
 import styles from '../assets/Sells.module.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 
@@ -37,7 +37,8 @@ export function Sells(props) {
     }
 
     const handleProductList = () => {
-        fetch(`${url}/product`)
+        const token = localStorage.getItem('token');
+        apiGet(`/product`, token)
             .then(response => response.json())
             .then(data => setProducts(data))
             .catch(error => console.log(error));
@@ -45,7 +46,8 @@ export function Sells(props) {
 
     const getDailySell = () => {
         const id = props.turnId;
-        fetch(`${url}/daily-sell/turn/${id}`)
+        const token = localStorage.getItem('token');
+        apiGet(`/daily-sell/turn/${id}`, token)
             .then(response => response.json())
             .then(data => setDailySells(data))
             .catch(error => console.log(error));
@@ -58,11 +60,8 @@ export function Sells(props) {
             const description = prod.description;
             const productPrice = prod.price;
             const data = { turnId, productId, description, units, productPrice };
-            fetch(`${url}/daily-sell`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
+            const token = localStorage.getItem('token');
+            apiPost(`/daily-sell`, data, token)
                 .then(response => response.json())
                 .then(data => console.log(data))
                 .catch(error => console.error(error))
@@ -76,11 +75,8 @@ export function Sells(props) {
 
     function saveSells() {
         const turnId = props.turnId;
-        fetch(`${url}/sells/${turnId}/${paymentMethod}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify('')
-        })
+        const token = localStorage.getItem('token');
+        apiPost(`/sells/${turnId}/${paymentMethod}`, {}, token)
             .then(response => response.json())
             .then(data => console.log(data))
             .catch(error => console.error(error))
@@ -89,9 +85,8 @@ export function Sells(props) {
     };
 
     const handleDelete = (id) => {
-        fetch(`${url}/daily-sell/${id}`, {
-            method: 'DELETE'
-        })
+        const token = localStorage.getItem('token');
+        apiDelete(`/daily-sell/${id}`, token)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error al eliminar el turno');

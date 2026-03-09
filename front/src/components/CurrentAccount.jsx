@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { url } from '../services/api';
+import { apiGet, apiPost } from '../services/api';
 import styles from '../assets/CurrentAccount.module.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
@@ -20,7 +20,8 @@ export function CurrentAccount(props) {
 
     const getCurrentAccountByTurn = () => {
         const id = props.turn.id;
-        fetch(`${url}/current-account/turn/${id}`)
+        const token = localStorage.getItem('token');
+        apiGet(`/current-account/turn/${id}`, token)
             .then(response => response.json())
             .then(data => setCurrentAccount(data))
             .catch(error => console.log(error));
@@ -28,7 +29,8 @@ export function CurrentAccount(props) {
 
     const getCurrentAccountByPermanentTurn = () => {
         const id = props.isPermanent ? props.turn.id : props.turn.permanentTurnId;
-        fetch(`${url}/current-account/permanent-turn/${id}`)
+        const token = localStorage.getItem('token');
+        apiGet(`/current-account/permanent-turn/${id}`, token)
             .then(response => response.json())
             .then(data => setCurrentAccount(data))
             .catch(error => console.log(error));
@@ -57,11 +59,8 @@ export function CurrentAccount(props) {
         const shiftId = shift.id;
         const data = { permanentTurnId, turnId, description, amount, shiftId };
         console.log(data);
-        fetch(`${url}/current-account`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
+        const token = localStorage.getItem('token');
+        apiPost(`/current-account`, data, token)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

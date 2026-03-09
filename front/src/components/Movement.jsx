@@ -1,6 +1,6 @@
 import ShiftContext from '../contexts/ShiftContext';
 import React, { useEffect, useState, useContext } from 'react'
-import { url } from '../services/api';
+import { apiGet, apiPost } from '../services/api';
 import styles from '../assets/Movements.module.css';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
@@ -20,7 +20,8 @@ export default function Movement() {
 
     const getShiftMovements = () => {
         const shiftId = shift.id;
-        fetch(`${url}/movement/${shiftId}`)
+        const token = localStorage.getItem('token');
+        apiGet(`/movement/${shiftId}`, token)
             .then(response => response.json())
             .then(data => setMovements(data))
             .catch(error => console.log(error));
@@ -37,11 +38,8 @@ export default function Movement() {
         }
         const shiftId = shift.id;
         const data = { shiftId, description, amount };
-        fetch(`${url}/movement`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
+        const token = localStorage.getItem('token');
+        apiPost(`/movement`, data, token)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
