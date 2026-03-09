@@ -1,35 +1,24 @@
 version: '3'
 services:
-  mysql-db:
-    image: mysql:8.0.30
-    container_name: mysql-db
-    restart: always
-    environment:
-      MYSQL_DATABASE: turns
-      MYSQL_USER: turnos
-      MYSQL_PASSWORD: turnos
-      MYSQL_ROOT_PASSWORD: turnos
-      MYSQL_ROOT_HOST: '%'
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./db_data:/var/lib/mysql
-    networks:
-      - my_network
   back:
     build:
-     dockerfile: DockerfileBack
+      dockerfile: DockerfileBack
     container_name: back
     restart: always
     ports:
       - "8080:8080"
-    depends_on:
-      - mysql-db
+    environment:
+      # Usar perfil prod (usa application-prod.yml con H2 en /data/h2)
+      SPRING_PROFILES_ACTIVE: prod
+    volumes:
+      # Carpeta local para persistir la base H2
+      - ./db_data:/data/h2
     networks:
       - my_network
+
   front:
     build:
-     dockerfile: DockerfileFront
+      dockerfile: DockerfileFront
     container_name: front
     restart: always
     ports:
@@ -38,16 +27,6 @@ services:
       - 80
     depends_on:
       - back
-    networks:
-      - my_network
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    restart: always
-    environment:
-      PMA_HOST: mysql-db
-      MYSQL_ROOT_PASSWORD: turnos
-    ports:
-      - "8081:80"
     networks:
       - my_network
 
