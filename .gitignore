@@ -30,7 +30,7 @@ DockerBuild/build/
 DockerBuild/db_data/
 
 ### IntelliJ IDEA ###
-back/.idea/
-back/*.iws
-back/*.iml
-back/*.ipr
+.idea/
+*.iws
+*.iml
+*.ipr
