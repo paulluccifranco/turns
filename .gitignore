@@ -28,3 +28,9 @@ front/build
 
 DockerBuild/build/
 DockerBuild/db_data/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
